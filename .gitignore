@@ -1,0 +1,4 @@
+data
+src/*.pyc
+src/*.swp
+__pycache__

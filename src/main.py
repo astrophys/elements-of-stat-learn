@@ -21,6 +21,7 @@ from error import exit_w_error
 from plot import plot_data
 from lin_reg import linear_regression
 from nearest_neighbor import get_N_nearest_neighbors_votes
+from functions import order_points
 
 def main():
     """
@@ -64,29 +65,28 @@ def main():
     x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
     x2V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
     x2Trans = []    # Get values of [x1, x2] 
-    matrix = np.zeros([x1V.shape[0], x1V.shape[0]])
+    boundary = []
+    matrix = np.zeros([x1V.shape[0], x1V.shape[0]], dtype=np.int32)
     for i in range(len(x1V)):
         for j in range(len(x2V)):
             x1 = x1V[i]
             x2 = x2V[j]
             matrix[i,j] = get_N_nearest_neighbors_votes(DataL=dataL, N=15, Pos=[x1,x2])
+            curGroup = int(matrix[i,j])
+            if(j!=0 and j!=matrix.shape[1]):
+                if(int(prevGroup) != int(curGroup)):
+                    boundary.append([x1V[i],x2V[j]])
+                prevGroup = curGroup
+            else:
+                prevGroup = curGroup
+                
+            
+            
     ### Get NN line - Find position where transition from one group to another occurs ###
-    boundary = []
-    for j in range(matrix.shape[1]):
-        prevGroup = matrix[0,j]
-        curGroup = matrix[0,j]
-        for i in range(matrix.shape[0]):
-            curGroup = matrix[i,j]
-            if(int(prevGroup) != int(curGroup)):
-                boundary.append([x1V[i],x2V[j]])
-                break   # Fix later...Mises multiple transitions
     ### Convert boundary to format that can be used by plot_data ###
+    boundary = order_points(boundary)
     boundary = np.asarray(boundary)
     boundary = np.swapaxes(boundary,1,0)
-    ## Not sure if I should switch columns ##
-    tmp = np.copy(boundary[0,:])
-    boundary[0,:] = boundary[1,:]
-    boundary[1,:] = tmp
     plot_data(ScatterDataL = dataL, LineDataL = boundary)
     
     ### Output data for diagnostics ###

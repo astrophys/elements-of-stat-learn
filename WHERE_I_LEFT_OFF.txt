@@ -1,7 +1,10 @@
 Did:
-1. Added nearest_neighbor.py 
-2. Removed lnIdx from plot_data() for lines. Redundant and stupid.
+1. Removed swapping columns for boundary after N-neighbor search
+2. Added euclidean_dist() and order_points() to overcome ugly boundary
+   due to misordered points
 
 To Do:
 1. The problem is with trying to find the line boundary between the two groups
    the matrix[] looks roughly of the same form.
+2. There is a goofy oscillation due to multiple switches across a matrix[:,j] 
+   j-column. 

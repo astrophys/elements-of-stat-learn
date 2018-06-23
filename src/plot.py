@@ -25,8 +25,8 @@ def plot_data(ScatterDataL = None, LineDataL = None):
 
     ### Plot regressed line fit ###
     if(len(LineDataL) != 0):
-        for lnIdx in range(len(LineDataL)):
-            plt.plot(LineDataL[lnIdx][0], LineDataL[lnIdx][1], 'r-')
+        #for lnIdx in range(len(LineDataL)):
+        plt.plot(LineDataL[0], LineDataL[1], 'r-')
 
     plt.legend()
     plt.show()

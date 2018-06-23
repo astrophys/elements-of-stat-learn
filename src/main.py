@@ -13,12 +13,14 @@
 #       I have a pretty decent understanding of linear regression
 #
 #
+import time
 import pandas as pd
 import sys
 import numpy as np
 from error import exit_w_error
 from plot import plot_data
 from lin_reg import linear_regression
+from nearest_neighbor import get_N_nearest_neighbors_votes
 
 def main():
     """
@@ -30,6 +32,7 @@ def main():
     FUTURE:
         1. Create GROUP class to make this clean
     """
+    startTime = time.time()
     # Check Python version
     if(sys.version_info[0] < 3):
         exit_w_error("ERROR!!! Runs with python3, NOT {}\n".format(sys.argv[0]))
@@ -45,18 +48,59 @@ def main():
     dataL = [ [groupA_x1, groupA_x2], [groupB_x1, groupB_x2]]
 
     ### Train ML algorithm - Recall classification based on _2_ vector quantitites ###
+    # Here I explicitly solve the equation 0.5 = x*beta, where x = [1, x1, x2]
+    # beta = [beta_0, beta_1, beta_2] and 0.5 is the decision boundary. I solve
+    # for x2 given x1
     beta = linear_regression(DataL = dataL, Method="Normal")
     beta = linear_regression(DataL = dataL, Method="QR")
-    minVal = -4
+    minVal = -3
     maxVal = 4
-    iterations = 300
-    x1 = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)
-    x2 = (0.5 - beta[0] - x1 * beta[1])/beta[2]
+    iterations = 100
+    x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
+    x2V = (0.5 - beta[0] - x1V * beta[1])/beta[2]
+    plot_data(ScatterDataL = dataL, LineDataL = [x1V, x2V] )
+    
+    ## Try nearest neighbor -- Super expensive ##
+    x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
+    x2V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
+    x2Trans = []    # Get values of [x1, x2] 
+    matrix = np.zeros([x1V.shape[0], x1V.shape[0]])
+    for i in range(len(x1V)):
+        for j in range(len(x2V)):
+            x1 = x1V[i]
+            x2 = x2V[j]
+            matrix[i,j] = get_N_nearest_neighbors_votes(DataL=dataL, N=15, Pos=[x1,x2])
+    ### Get NN line - Find position where transition from one group to another occurs ###
+    boundary = []
+    for j in range(matrix.shape[1]):
+        prevGroup = matrix[0,j]
+        curGroup = matrix[0,j]
+        for i in range(matrix.shape[0]):
+            curGroup = matrix[i,j]
+            if(int(prevGroup) != int(curGroup)):
+                boundary.append([x1V[i],x2V[j]])
+                break   # Fix later...Mises multiple transitions
+    ### Convert boundary to format that can be used by plot_data ###
+    boundary = np.asarray(boundary)
+    boundary = np.swapaxes(boundary,1,0)
+    ## Not sure if I should switch columns ##
+    tmp = np.copy(boundary[0,:])
+    boundary[0,:] = boundary[1,:]
+    boundary[1,:] = tmp
+    plot_data(ScatterDataL = dataL, LineDataL = boundary)
+    
+    ### Output data for diagnostics ###
+    fout = open("tmp2.txt", "w+")
+    for i in range(matrix.shape[0]):
+        for j in range(matrix.shape[1]):
+            fout.write("{} {} {}\n".format(x1V[i], x2V[j], matrix[i,j]))
+    fout.close()
+    
+    
     
 
-    plot_data(ScatterDataL = dataL, LineDataL = [ [x1, x2] ])
-    
-
+    print("Run Time : {:.4f} h".format((time.time() - startTime)/3600.0))
+    return 0
 
 if __name__ == "__main__":
     main()

@@ -28,19 +28,19 @@ def linear_regression(DataL = None, Method = None):
         2. Offer switches between using two different xlsx spread sheets
         3. Figure out how to pick threshold... for x*beta
     """
-    x = []
-    y = []
+    x1 = []
+    x2 = []
     group = []
     for grpIdx in range(len(DataL)):
         if(len(DataL[grpIdx]) != 2):
             exit_w_error("ERROR!!! Expecting only 2 dimenional categoral data")
-        x.extend(DataL[grpIdx][0])
-        y.extend(DataL[grpIdx][1])
+        x1.extend(DataL[grpIdx][0])
+        x2.extend(DataL[grpIdx][1])
         group.extend( [grpIdx] * len(DataL[grpIdx][0]))
-    x = np.asarray(x)
-    y = np.asarray(y)
+    x1 = np.asarray(x1)
+    x2 = np.asarray(x2)
     ### add ones to get intercept / bias ###
-    matrix = np.column_stack((np.ones(len(x)), x,y))## Matrix of vector quantities
+    matrix = np.column_stack((np.ones(len(x1)), x1,x2))## Matrix of vector quantities
     group = np.asarray(group)
 
     print("Training machine learning algorithm : linear regression : ...".format(Method))

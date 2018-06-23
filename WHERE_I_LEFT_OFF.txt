@@ -1,0 +1,7 @@
+Did:
+1. Added nearest_neighbor.py 
+2. Removed lnIdx from plot_data() for lines. Redundant and stupid.
+
+To Do:
+1. The problem is with trying to find the line boundary between the two groups
+   the matrix[] looks roughly of the same form.

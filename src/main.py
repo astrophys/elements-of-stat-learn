@@ -22,6 +22,8 @@ from plot import plot_data
 from lin_reg import linear_regression
 from nearest_neighbor import get_N_nearest_neighbors_votes
 from functions import order_points
+from bayes import bayes_classifier
+from bayes import plot_bivariate_gaussian
 
 def main():
     """
@@ -29,9 +31,20 @@ def main():
     RETURN:
     DESCRIPTION:
     NOTES: 
+        1. Data used in the program was taken from Hastie's website for 
+           Elements of Statistical Learning. Here is his description
+           of how it was created (p 17): 
+                'First we generated 10 means mk from a bivariate Gaussian distribution
+                 N((1, 0)T , I) and labeled this class BLUE. Similarly, 10 more were
+                 drawn from N((0,1)T,I) and labeled class ORANGE. Then for each class
+                 we generated 100 observations as follows: for each observation, we
+                 picked an mk at random with probability 1/10, and'then generated a
+                 N(mk,I/5), thus leading to a mixture of Gaussian clusters for each
+                 class.'
     DEBUG:
     FUTURE:
         1. Create GROUP class to make this clean
+        2. Try generating random data the same way Hastie did.
     """
     startTime = time.time()
     # Check Python version
@@ -89,6 +102,18 @@ def main():
     boundary = np.swapaxes(boundary,1,0)
     plot_data(ScatterDataL = dataL, LineDataL = boundary)
     
+    ### Debug bivariate_gaussian()
+    plot_bivariate_gaussian(Mu1=0, Mu2=1)
+    #plot_bivariate_gaussian(Mu1=1, Mu2=0)
+
+    ### Do bayes classifier using our exact knowledge of how the distribution was drawn ###
+    ### See ESL by Hastie for further details ###
+    boundary = bayes_classifier([-4, 4])
+    boundary = order_points(boundary)
+    boundary = np.asarray(boundary)
+    boundary = np.swapaxes(boundary,1,0)
+    plot_data(ScatterDataL = dataL, LineDataL = boundary)
+
     ### Output data for diagnostics ###
     fout = open("tmp2.txt", "w+")
     for i in range(matrix.shape[0]):

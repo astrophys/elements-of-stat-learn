@@ -1,10 +1,20 @@
 Did:
-1. Removed swapping columns for boundary after N-neighbor search
-2. Added euclidean_dist() and order_points() to overcome ugly boundary
-   due to misordered points
+1. Cleaned up order_points()
+2. Added comments to main() describing how the simulated data was created.
+3. added bayes.py with bivariate_gaussian and plot_bivariate_gaussian()
+4. plot_bivariate_gaussian() visually confirms that bivariate_gaussian() is 
+   doing something reasonable.
 
 To Do:
-1. The problem is with trying to find the line boundary between the two groups
-   the matrix[] looks roughly of the same form.
-2. There is a goofy oscillation due to multiple switches across a matrix[:,j] 
-   j-column. 
+0. The bayes' classifier returns a shit line boundary. THIS NEEDS FIXED!!
+   --> After playing with gnuplot and the output of plot_bivariate_gaussian()
+       I believe that I'm not getting the Baye's boundary correctly.  I really
+       need to follow the algorithm laid out on p16-17 of Hastie. I'm perplexed
+       by the comment that the boundary is 'completely known'. I don't believe this
+       b/c I don't know the 'm_k' that they picked.
+1. Create ability to generate plots like Hastie fig 2.3.  This would required 
+   substantial effort in identifying 'islands'
+2. Create ability to generate the data hastie did for Fig 2.1,2.2, and 2.3.
+   Generate 10 means from bivariate distribution for blue, do same for orange.
+   For each observation, draw randomly from one mean and then use it to seed 
+   the Gaussian.

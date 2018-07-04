@@ -4,3 +4,4 @@ src/*.swp
 *.swp
 tmp*
 __pycache__
+biv_gaus.txt

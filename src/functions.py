@@ -21,21 +21,13 @@ def order_points(Points = None):
     NOTES: 
         Sadly this scales as O(N**2). I could do better but I don't care right now
     DEBUG:
+        1. Visually compared my plot with Hastie Fig 2.2. Very close
     FUTURE:
     """
     print("Ordering points...")
     ### Get 'typical' delta
     meanDelta = 0
     alreadyAdded = np.zeros(len(Points), dtype=np.int32)  # Flag points already added
-
-    #for i in range(len(Points)):
-    #    if(len(Points[i]) != 2):
-    #        exit_w_error("ERROR!!! dimension = 2 expected, {}"
-    #                     "received".format(len(Points[i])))
-    #    if(i != len(Points) - 1):
-    #        meanDelta = meanDelta + euclidean_dist(Point1=Points[i], Point2=Points[i+1])
-    #meanDelta = meanDelta / len(Points)
-
     orderedPoints = []
     orderedPoints.append(Points[0])
     alreadyAdded[0] = 1

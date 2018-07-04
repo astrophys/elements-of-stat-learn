@@ -26,10 +26,21 @@ def get_N_nearest_neighbors_votes(DataL = None, N = None, Pos = None):
     RETURN:
     DESCRIPTION:
     NOTES: 
+        As one takes the limit of N->1, you are effectively fitting
+        N points with N parameters.  This isn't good. Kind of like
+        fitting N-points with an N'th order polynomial. Called 
+        'overfitting'.
+
+        Most appropriate when (quoting Hastie):
+            'The training data in each class came from a mixture of 10 low-variance
+            Gaussian distributions, with individual means themselves distributed
+            as Gaussian.' 
+        defined as Scenerio 2 on p13. We should TEST!!
+
     DEBUG:
+        1. Visually compared my plot with Hastie Fig 2.2. Very close
     FUTURE:
-        1. Debug...
-        2. Make efficient
+        1. Test Scenerio 2 as defined on ESL by Hastie p13
     """
     dist2L  = []
     valueL  = []

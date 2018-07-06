@@ -1,9 +1,6 @@
 Did:
-1. Cleaned up order_points()
-2. Added comments to main() describing how the simulated data was created.
-3. added bayes.py with bivariate_gaussian and plot_bivariate_gaussian()
-4. plot_bivariate_gaussian() visually confirms that bivariate_gaussian() is 
-   doing something reasonable.
+1. bayes_classifier() -> bayes_classifier_NOT_FUNCTIONAL(). I need to do 
+   a better job trying to reproduce Figure 2.5
 
 To Do:
 0. The bayes' classifier returns a shit line boundary. THIS NEEDS FIXED!!

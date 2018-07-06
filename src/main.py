@@ -103,7 +103,7 @@ def main():
     plot_data(ScatterDataL = dataL, LineDataL = boundary)
     
     ### Debug bivariate_gaussian()
-    plot_bivariate_gaussian(Mu1=0, Mu2=1)
+    #plot_bivariate_gaussian(Mu1=0, Mu2=1)
     #plot_bivariate_gaussian(Mu1=1, Mu2=0)
 
     ### Do bayes classifier using our exact knowledge of how the distribution was drawn ###

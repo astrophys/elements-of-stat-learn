@@ -21,10 +21,12 @@ of machine learning by actually implementing some of the code.
 #. For notes : 
 
 ## Description of files
+
 #### Code
+
 #### Notes
 
-#### References:
+## References:
 1. [Elements of Statistical Learning by Hastie Tibshirani and Friedman](https://hastie.su.domains/ElemStatLearn/)
 
 

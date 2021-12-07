@@ -17,14 +17,16 @@ of machine learning by actually implementing some of the code.
 3. The [data](https://hastie.su.domains/ElemStatLearn/)(click on 'data' on LHS)
 
 #### Build / Run:
+
 1. For code  : 
-#. For notes : 
+
+2. For notes : 
 
 ## Description of files
 
-#### Code
+#### Code :
 
-#### Notes
+#### Notes :
 
 ## References:
 1. [Elements of Statistical Learning by Hastie Tibshirani and Friedman](https://hastie.su.domains/ElemStatLearn/)

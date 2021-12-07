@@ -11,6 +11,9 @@ def bayes_classifier(RangeX1=None):
     RETURN:
         A list of points that are approx equal to the orange/blue boundary.
     DESCRIPTION:
+        Basically the bayes_classifier picks the region with the maximum probability
+        and labels the region with that class. k-nearest neighbors approximates
+        this solution.
     NOTES: 
         Can plot the means in gnuplot, e.g. 
             plot [-4:4][-4:4] "tmp.txt" index 0 using 1:2, "tmp.txt" index 1 using 1:2

@@ -1,17 +1,5 @@
 Did:
-1. bayes_classifier() -> bayes_classifier_NOT_FUNCTIONAL(). I need to do 
-   a better job trying to reproduce Figure 2.5
 
 To Do:
-0. The bayes' classifier returns a shit line boundary. THIS NEEDS FIXED!!
-   --> After playing with gnuplot and the output of plot_bivariate_gaussian()
-       I believe that I'm not getting the Baye's boundary correctly.  I really
-       need to follow the algorithm laid out on p16-17 of Hastie. I'm perplexed
-       by the comment that the boundary is 'completely known'. I don't believe this
-       b/c I don't know the 'm_k' that they picked.
 1. Create ability to generate plots like Hastie fig 2.3.  This would required 
    substantial effort in identifying 'islands'
-2. Create ability to generate the data hastie did for Fig 2.1,2.2, and 2.3.
-   Generate 10 means from bivariate distribution for blue, do same for orange.
-   For each observation, draw randomly from one mean and then use it to seed 
-   the Gaussian.

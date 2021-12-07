@@ -14,7 +14,7 @@ of machine learning by actually implementing some of the code.
 #### Dependencies:
 1. Acquire Python 3.6+ (incl. numpy, scipy and matplotlib).
 2. Pandoc if you want to generate pdfs for some of the notes.
-3. The [data](https://hastie.su.domains/ElemStatLearn/)(click on 'data' on LHS)
+3. The [data](https://hastie.su.domains/ElemStatLearn/) (click on 'data' on LHS)
 
 #### Build / Run:
 

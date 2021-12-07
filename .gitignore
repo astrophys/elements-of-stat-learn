@@ -6,3 +6,4 @@ tmp*
 __pycache__
 biv_gaus.txt
 .DS_Store
+*.pdf

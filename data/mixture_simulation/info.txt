@@ -33,3 +33,5 @@ pred<-predict.logit(xnew)
 then the test error is 
 
 test.error<-sum(marginal*(prob*I(pred <0)+(1-prob)*I(pred>=0)))
+
+

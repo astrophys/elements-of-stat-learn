@@ -3,3 +3,4 @@ Did:
 To Do:
 1. Create ability to generate plots like Hastie fig 2.3.  This would required 
    substantial effort in identifying 'islands'
+2. Clean up both lin_reg.py and main.py to make better sense and easier to understand

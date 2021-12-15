@@ -1,4 +1,3 @@
-data
 src/*.pyc
 src/*.swp
 *.swp
@@ -7,3 +6,13 @@ __pycache__
 biv_gaus.txt
 .DS_Store
 *.pdf
+
+## Mixture simulation
+ESL.mixture.rda
+info.txt
+marginal.txt
+means.txt
+prob.txt
+px1.txt
+px2.txt
+xnew.txt

@@ -31,5 +31,7 @@ of machine learning by actually implementing some of the code.
 ## References:
 1. [Elements of Statistical Learning by Hastie Tibshirani and Friedman](https://hastie.su.domains/ElemStatLearn/)
 
+## Acknowledgements
+1. Thank you Trevor Hastie for permitting me to include the raw data used to generate the figures in [Elements of Statistical Learning by Hastie Tibshirani and Friedman](https://hastie.su.domains/ElemStatLearn/) within this repository.
 
 

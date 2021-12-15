@@ -55,6 +55,8 @@ def main():
     data = pd.read_table("data/mixture_simulation/x.txt", sep=" ", header=0,
                            names=["x", "y"])
     ### Get Groups ###
+    # Group A = Blue,   y <= 0.5
+    # Group B = Orange, y >  0.5
     groupA_x1 = data['x'][:100]
     groupA_x2 = data['y'][:100]
     groupB_x1 = data['x'][100:]
@@ -65,16 +67,22 @@ def main():
     # Here I explicitly solve the equation 0.5 = x*beta, where x = [1, x1, x2]
     # beta = [beta_0, beta_1, beta_2] and 0.5 is the decision boundary. I solve
     # for x2 given x1
+
+    ####################### Least Squares #########################
     beta = linear_regression(DataL = dataL, Method="Normal")
     beta = linear_regression(DataL = dataL, Method="QR")
+    ###  Create line to plot
     minVal = -3
     maxVal = 4
     iterations = 100
-    x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
-    x2V = (0.5 - beta[0] - x1V * beta[1])/beta[2]
+    # Use x1V and x2V instead of x and y to follow Hastie's convention 
+    x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # x-axis,
+    x2V = (0.5 - beta[0] - x1V * beta[1])/beta[2]                    # y-axis
+    ### Plot line and scatter plot
     plot_data(ScatterDataL = dataL, LineDataL = [x1V, x2V] )
     
-    ## Try nearest neighbor -- Super expensive ##
+    ####################### Nearest Neighbors #########################
+    # Super computationally expensive 
     x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
     x2V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
     x2Trans = []    # Get values of [x1, x2] 

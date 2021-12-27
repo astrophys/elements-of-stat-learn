@@ -64,10 +64,6 @@ def main():
     dataL = [ [groupA_x1, groupA_x2], [groupB_x1, groupB_x2]]
 
     ### Train ML algorithm - Recall classification based on _2_ vector quantitites ###
-    # Here I explicitly solve the equation 0.5 = x*beta, where x = [1, x1, x2]
-    # beta = [beta_0, beta_1, beta_2] and 0.5 is the decision boundary. I solve
-    # for x2 given x1
-
     ####################### Least Squares #########################
     beta = linear_regression(DataL = dataL, Method="Normal")
     beta = linear_regression(DataL = dataL, Method="QR")
@@ -75,16 +71,25 @@ def main():
     minVal = -3
     maxVal = 4
     iterations = 100
-    # Use x1V and x2V instead of x and y to follow Hastie's convention 
+    # x1V, x2V follow follow Hastie's convention for x-y coords on plot
+    # Generate
     x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # x-axis,
+    # Here I explicitly solve eqn 2.1 / 2.2 : 
+    #           \hat{Y} = X^{T} \hat{\beta}
+    #           \hat{Y} = [1, x1, x2] [\hat{\beta_{0}}, \hat{\beta}_{1}, \hat{\beta}_{2}]^T
+    #       Decision boundary is \hat{Y} = 0.5              
+    #           0.5 = \beta_{0} + x1V \beta_{1} + x2V \beta{2}
+    #           x2V = (0.5 - \beta_{0} - x1V \beta_{1}) / \beta{2}
     x2V = (0.5 - beta[0] - x1V * beta[1])/beta[2]                    # y-axis
     ### Plot line and scatter plot
     plot_data(ScatterDataL = dataL, LineDataL = [x1V, x2V], Comment = "Hastie Fig 2.1")
     
+
     ####################### Nearest Neighbors #########################
     # Super computationally expensive 
-    x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
-    x2V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # Vector
+    # Use x1V and x2V instead of x and y to follow Hastie's convention 
+    x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # x-axis
+    x2V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # y-axis 
     x2Trans = []    # Get values of [x1, x2] 
     boundary = []
     matrix = np.zeros([x1V.shape[0], x1V.shape[0]], dtype=np.int32)
@@ -101,8 +106,6 @@ def main():
             else:
                 prevGroup = curGroup
                 
-            
-            
     ### Get NN line - Find position where transition from one group to another occurs ###
     ### Convert boundary to format that can be used by plot_data ###
     boundary = order_points(boundary)

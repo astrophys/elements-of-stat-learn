@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from error import exit_w_error
 
-def plot_data(ScatterDataL = None, LineDataL = None):
+def plot_data(ScatterDataL = None, LineDataL = None, Comment = None):
     """ 
     ARGS:
         ScatterDataL = List of groups' x,y data
@@ -15,7 +15,7 @@ def plot_data(ScatterDataL = None, LineDataL = None):
     DEBUG:
     FUTURE:
     """
-    print("Plotting data, like Hastie Fig 2.1")
+    print("{}".format(Comment))
     colors = ['blue', '#ffa500', 'red']
     ### Will plot arbitrary number of data sets up to len(colors) ###
     for grpIdx in range(len(ScatterDataL)):

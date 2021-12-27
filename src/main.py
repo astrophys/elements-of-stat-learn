@@ -79,7 +79,7 @@ def main():
     x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # x-axis,
     x2V = (0.5 - beta[0] - x1V * beta[1])/beta[2]                    # y-axis
     ### Plot line and scatter plot
-    plot_data(ScatterDataL = dataL, LineDataL = [x1V, x2V] )
+    plot_data(ScatterDataL = dataL, LineDataL = [x1V, x2V], Comment = "Hastie Fig 2.1")
     
     ####################### Nearest Neighbors #########################
     # Super computationally expensive 
@@ -108,7 +108,7 @@ def main():
     boundary = order_points(boundary)
     boundary = np.asarray(boundary)
     boundary = np.swapaxes(boundary,1,0)
-    plot_data(ScatterDataL = dataL, LineDataL = boundary)
+    plot_data(ScatterDataL = dataL, LineDataL = boundary, Comment = "Hastie Fig 2.2")
     
     ### Debug bivariate_gaussian()
     #plot_bivariate_gaussian(Mu1=0, Mu2=1)
@@ -120,7 +120,7 @@ def main():
     boundary = order_points(boundary)
     boundary = np.asarray(boundary)
     boundary = np.swapaxes(boundary,1,0)
-    plot_data(ScatterDataL = dataL, LineDataL = boundary)
+    plot_data(ScatterDataL = dataL, LineDataL = boundary, Comment = "Hastie Fig 2.5")
 
     ### Output data for diagnostics ###
     fout = open("tmp2.txt", "w+")

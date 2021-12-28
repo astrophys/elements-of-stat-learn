@@ -183,6 +183,7 @@ def plot_bivariate_gaussian(Mu1 = None, Mu2 = None):
             fout.write("\n")
         pPrev = p[0]
         fout.write("{} {} {}\n".format(p[0],p[1],p[2]))
+    fout.close()
 
     plt.show()
 

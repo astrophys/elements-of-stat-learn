@@ -61,7 +61,14 @@ Jargon
         Rewrite in matrix notation and do dimentional analysis
         $$RSS(\beta) = (\underbracket[0.2mm][0.6mm]{\bf y}_{\text{N}} - \overbracket[0.2mm][0.6mm]{\bf X}^{N\times p} \underbracket[0.2mm][0.6mm]{\beta}_{p})^{T}({\bf y} - {\bf X}\beta) $$  {#eq:2.4}
         Optimizing for $\beta$ (i.e. taking the derivative w/r/t $\beta$)
-        $$ \frac{d}{d \beta} \big( RSS(\beta) = ({\bf y} - {\bf X} \beta)^{T}({\bf y} - {\bf X}\beta)\big)$$ }
+        $$ \frac{d}{d \beta} \big( RSS(\beta) = ({\bf y} - {\bf X} \beta)^{T}({\bf y} - {\bf X}\beta)\big) = 0$$ }
+        That is hard, let's do a simple substitution, let $\beta' = ({\bf y} - {\bf X} \beta)$.
+        Now above eqn becomes
+        $$ \frac{d}{d \beta} \big( \beta'^{T} \beta' \big)= 2 \beta'^{T} \frac{d \beta'}{d \beta} = 0 $$ 
+        Now substitute in for $\beta'$
+        $$ \frac{d}{d \beta} \big( \beta'^{T} \beta' \big) = 2({\bf y} - {\bf X}\beta)^{T} \frac{d ({\bf y} - {\bf X}\beta)}{d \beta} = 2({\bf y} - {\bf X}\beta)^{T}(-{\bf X}) = 0$$ 
+        Cancel -2 factor and take transpose across both sides 
+        $$ {\bf X}^{T}({\bf y} - {\bf X}\beta) = 0$$                            {#eq:2.5}
         $$ \frac{d}{d \beta} \big( RSS(\beta) = ({\bf y}^{T} - \beta^{T}{\bf X}^{T} )({\bf y} - {\bf X}\beta)\big)$$ 
         $$ \frac{d}{d \beta} \big( RSS(\beta) = {\bf y^{T}y} -{\bf y^{T}X\beta} - \beta^{T}{\bf X}^{T}{\bf y} + \beta^{T}{\bf X}^{T}{\bf X}\beta \big)$$
         $$  0 = - {\bf y^{T}X} - {\bf X}^{T}{\bf y} + \beta^{T}{\bf X}^{T}{\bf X}\beta \big)$$

@@ -65,6 +65,13 @@ def main():
 
 
     ####################### Least Squares #########################
+    # Strategy : 
+    #   1. Solve for beta using equation 2.6
+    #   2. set x-axis (i.e. x1V) as vector with regular intervals
+    #   3. Set predicted category variable, \hat{Y}=0.5. Use beta, solve
+    #      for y-axis (x2V) 
+    #   4. Use x1V and x2V to get classification threshold line
+    #   5. Plot 
     print("Least Square's Regression: ")
     beta = linear_regression(DataL = dataL, Method="Normal")
     #beta = linear_regression(DataL = dataL, Method="QR")
@@ -77,7 +84,7 @@ def main():
     #   2. x1V  (x-axis)
     #   3. x2V  (y-axis) 
     x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # x-axis,
-    # Here I explicitly solve eqn 2.1 / 2.2 : 
+    # Here I explicitly solve eqn 2.2 : 
     #           \hat{Y} = X^{T} \hat{\beta}
     #           \hat{Y} = [1, x1, x2] [\hat{\beta_{0}}, \hat{\beta}_{1}, \hat{\beta}_{2}]^T
     #       Decision boundary is \hat{Y} = 0.5              

@@ -1,3 +1,11 @@
+# Author : Ali Snedden
+# Date   : 12/27/21
+# License: MIT
+# Purpose: 
+#   This code is used in main.py to replicate the Least Squares Method
+#   in Hastie. See eqn 2.2 and 2.6
+#
+#
 import numpy as np
 from error import exit_w_error
 

@@ -51,7 +51,7 @@ def linear_regression(DataL = None, Method = None):
     matrix = np.column_stack((np.ones(len(x1)), x1,x2))## Matrix of vector quantities
     group = np.asarray(group)
 
-    print("Training machine learning algorithm : linear regression : ...".format(Method))
+    print("Linear regression technique use : {}".format(Method))
     if(Method == "QR"):
         (Q,R) = np.linalg.qr(matrix)
         Rinv = np.linalg.inv(R)
@@ -59,8 +59,8 @@ def linear_regression(DataL = None, Method = None):
         beta = np.dot(Rinv, np.dot(Qt, group))
 
     elif(Method == "Normal"):
-        xTxInv =np.linalg.inv(np.dot(matrix.T, matrix))   # Fails b/c singular
-        beta = np.dot(np.dot(xTxInv, matrix.T), group)
+        xTxInv =np.linalg.inv(np.dot(matrix.T, matrix))     # Fails b/c singular
+        beta = np.dot(np.dot(xTxInv, matrix.T), group)      # eqn 2.6
 
     else:
         exit_w_error("ERROR!!! Method == {} is invalid".format(Method))

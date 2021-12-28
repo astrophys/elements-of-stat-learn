@@ -65,8 +65,9 @@ def main():
 
 
     ####################### Least Squares #########################
+    print("Least Square's Regression: ")
     beta = linear_regression(DataL = dataL, Method="Normal")
-    beta = linear_regression(DataL = dataL, Method="QR")
+    #beta = linear_regression(DataL = dataL, Method="QR")
     ###  Create line to plot
     minVal = -3
     maxVal = 4
@@ -84,7 +85,7 @@ def main():
     #           x2V = (0.5 - \beta_{0} - x1V \beta_{1}) / \beta{2}
     x2V = (0.5 - beta[0] - x1V * beta[1])/beta[2]                    # y-axis
     ### Plot line predicted line (x1V vs. x2V) and scatter plot
-    plot_data(ScatterDataL = dataL, LineDataL = [x1V, x2V], Comment = "Hastie Fig 2.1")
+    plot_data(ScatterDataL = dataL, LineDataL = [x1V, x2V], Comment = "\tHastie Fig 2.1")
     
 
     ####################### Nearest Neighbors #########################
@@ -94,6 +95,7 @@ def main():
     #   3. Classify each point's group / category on the grid with N nearest neighbors
     #   4. Find the transition points to generate the boundary
     #   5. Plot
+    print("Nearest Neighbors: ")
     x1V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # x-axis
     x2V = np.arange(minVal, maxVal, (maxVal - minVal) / iterations)  # y-axis 
     boundary = []
@@ -116,7 +118,7 @@ def main():
     boundary = order_points(boundary)
     boundary = np.asarray(boundary)
     boundary = np.swapaxes(boundary,1,0)
-    plot_data(ScatterDataL = dataL, LineDataL = boundary, Comment = "Hastie Fig 2.2")
+    plot_data(ScatterDataL = dataL, LineDataL = boundary, Comment = "\tHastie Fig 2.2")
     
     ### Debug bivariate_gaussian()
     #plot_bivariate_gaussian(Mu1=0, Mu2=1)
@@ -126,11 +128,12 @@ def main():
     ####################### Bayes Classifier #########################
     ### Do bayes classifier using our exact knowledge of how the distribution was drawn ###
     ### See ESL by Hastie for further details ###
+    print("Bayes Classifier: ")
     boundary = bayes_classifier([-4, 4])
     boundary = order_points(boundary)
     boundary = np.asarray(boundary)
     boundary = np.swapaxes(boundary,1,0)
-    plot_data(ScatterDataL = dataL, LineDataL = boundary, Comment = "Hastie Fig 2.5")
+    plot_data(ScatterDataL = dataL, LineDataL = boundary, Comment = "\tHastie Fig 2.5")
 
     ### Output data for diagnostics ###
     #fout = open("tmp2.txt", "w+")

@@ -69,13 +69,28 @@ Jargon
         $$ \frac{d}{d \beta} \big( \beta'^{T} \beta' \big) = 2({\bf y} - {\bf X}\beta)^{T} \frac{d ({\bf y} - {\bf X}\beta)}{d \beta} = 2({\bf y} - {\bf X}\beta)^{T}(-{\bf X}) = 0$$ 
         Cancel -2 factor and take transpose across both sides 
         $$ {\bf X}^{T}({\bf y} - {\bf X}\beta) = 0$$                            {#eq:2.5}
-        $$ \frac{d}{d \beta} \big( RSS(\beta) = ({\bf y}^{T} - \beta^{T}{\bf X}^{T} )({\bf y} - {\bf X}\beta)\big)$$ 
-        $$ \frac{d}{d \beta} \big( RSS(\beta) = {\bf y^{T}y} -{\bf y^{T}X\beta} - \beta^{T}{\bf X}^{T}{\bf y} + \beta^{T}{\bf X}^{T}{\bf X}\beta \big)$$
-        $$  0 = - {\bf y^{T}X} - {\bf X}^{T}{\bf y} + \beta^{T}{\bf X}^{T}{\bf X}\beta \big)$$
+        Now solve for $\beta$
+        $$ {\bf X}^{T} {\bf y} - {\bf X}^{T} {\bf X}\beta = 0$$
+        $$  + {\bf X}^{T} {\bf X}\beta = + {\bf X}^{T} {\bf y}$$
+        $$   ({\bf X}^{T} {\bf X})^{-1} \big[{\bf X}^{T} {\bf X}\beta =  {\bf X}^{T} {\bf y} \big]$$
+        $$   \beta =  ({\bf X}^{T} {\bf X})^{-1} {\bf X}^{T} {\bf y} \big]$$    {#eq:2.6}
+    #) In Hasties' Figure 2.1, he uses categorical data where the points are orange or blue
+        #. Blue : $Y = 0$ 
+        #. Orange : $Y = 1$
+    #) For the prediction, he cuts on $\hat{Y} = 0.5$, so 
+        $$ \hat{G} = \left\{ \begin{array}{lr}
+                                    \text{Orange} & \text{if  } \hat{Y} > 0.5 \\
+                                    \text{Blue  } & \text{if  } \hat{Y}\leq 0.5
+                                \end{array}
+                       \right.
+           $$     {#eq:2.7}
+    
 
 
 2.4 Statistical Decision Theory
 ==========================
+#. Questions
+    a) $E_{x}$ = expectation value?
 
 2.5 Local Methods in High Dimensions
 ==========================

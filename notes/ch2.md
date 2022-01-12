@@ -189,8 +189,103 @@ Jargon
             * As dimensionality goes big, the rate of convergence goes to hell
             * We need to determine $\text{E}(Y|X)$ frome the data, 
     #) Consider linear regression w/in this framework
-        
+        #. Assuming that the regression function $f(x)$ is linear in its arguments
+            $$ f(x) \approx x^{T}\beta $$                                       {#eq:2.15}
+        #. Plugging in eqn \ref{eq:2.15} into eqn \ref{eq:2.9} 
+            $$ \text{EPE}(f) = \text{E}(Y - x^{T}\beta)^{2}$$
+            $$ \frac{d}{d\beta}\Big[\text{EPE}(f) = \text{E}(Y - x^{T}\beta)^{2}\Big]$$
+            $$ 0 = 2x^{T}\text{E}(Y - x^{T}\beta)$$
+            $$ . $$
+            $$ . $$
+            $$ . $$
+            $$ \beta = [\text{E}(XX^{T}]^{-1}\text{E}(XY)$$                     {#eq:2.16}
+            * Did not condition on X
+            * Least squares solution in eqn \ref{eq:2.6} is basically replacing expectation
+              values in eqn \ref{eq:2.16} with averages over the training data.
+            * QUESTION : How?
+        #. QUESTION : How do I go from above to eqn \ref{eq:2.16}?
+    #) Nearest neighbors and least squares approximate conditional expectations by averages.
+        #. Differ in model assumptions 
+            * Least squares assumes f(x) is well approximated by a globally linear
+              functions
+            * $k$-nearest neighbors assumes $f(x)$ is well approximated by a locally
+              constant function
+    #) Additive models assume
+        $$ f(X) = \sum_{j=1}^{p}f_{j}(X_{j})$$                                  {#eq:2.17}
+        #. Retains additivity of linear models, but $f_{j}$ is arbitrary
+        #. Optimal estimate uses techniques like $k$-nearest neighbors to approximate
+           \emph{univariate} conditional expectations \emph{simultaneously} for each of
+           the coordinate functions.
+        #. Sweeps away problems of estimating conditional expectation in high dimensions by 
+           assuming additivity.
+            * Often unrealistic
+        #. QUESTION : I need some intuition here
+    #) Are we happy with eqn \ref{eq:2.11}?
+        #. Consider replacing the quadratic $L_{2}$ loss function with a linear one
+            $$ L_{1} = \text{E}|Y-f(X)| $$
+        #. Solution becomes conditional median
+            $$ \hat{f}(x) = \text{median}(Y|X=x)$$                              {#eq:2.18}
+        #. Issues with continuity (i.e. derivative), will mention other loss functions 
+           in the future
+    #) How do we adapt loss functions for categorical data, $G$?
+        #. Have to assume values for each category
+        #. Loss function can be represented by $K\times K$ matrix ${\bf L}$ where 
+            * $K = \text{card}(\mathcal{G})$. 
+            * ${\bf L}$ is zero on diagonal nonnegative elsewhere - something special here
+            * $L(k,l)$ is price paid to classify observation to class $\mathcal{G}_{k}$ as
+              $\mathcal{G}_{l}$ 
+            * QUESTION : What is special about a matrix with trace = 0?
+        #. QUESTION : Jargon here...
+        #. Assume \emph{zero-one} loss function where misclassifications are charged single
+           unit, then 
+            $$ \text{EPE} = \text{E}[L(G,\hat{G}(X))]$$                         {#eq:2.19}
+           where expectation is taken w/r/t $\text{Pr}(G,X)$.  Use this to write
+            $$ \text{EPE} = \text{E}_{X}\sum^{K}_{k=1} L[\mathcal{G}_{k}, \hat{G}(X)]\text{Pr}(\mathcal{G}_{k}|X)$$                         {#eq:2.20}
+           minimize EPE pointwise
+            $$ \hat{G}(x) = \text{argmin}_{g\in\mathcal{G}}\sum^{K}_{k=1} L(\mathcal{G}_{k}, g)\text{Pr}(\mathcal{G}_{k}|X)$$                         {#eq:2.21}
+           with 0-1 loss function, simplifies to 
+            $$ \hat{G}(x) = \text{argmin}_{g\in\mathcal{G}}[1-\text{Pr}(g|X=x)]$$   {#eq:2.22}
+            $$ \hat{G}(x) = \mathcal{G}_{k} \text{ if } \text{Pr}(\mathcal{G}_{k}|X=x) = \text{max}_{g\in\mathcal{G}}\text{Pr}(g|X=x)$$   {#eq:2.23}
+        #. eqn \ref{eq:2.23} is the Baye's classifier
+            * QUESTION : To properly use, we need a-priori knowledge, if we don't have 
+                         a-priori knowledge, what do we do?
+           
+
+2.5 Local Methods in High Dimensions
+==========================
+1. Curse of dimensionality
+    a) Could find optimal conditional expectation by $k$-nearest neighbor averaging,
+       but breaks down at high dimension
+        #. QUESTION : How would we do this anyways?
+    #) Basically, as dimensionality increases, you have to ever increase the sampling of
+       the space to adequately train your model
+        #. E.g to sample 10% of the data (in 10D space) to form a local average, you need
+           to cover $e_{p}(0.10) = r^{1/p} = 0.80$, or 80% of the range for EACH input
+           variable
+#. Consider a $N$ data points distributed uniformly over a $p$-dimensional unit ball
+    #) Consider nearest-neighbor estimate at origin
+    #) Median distance from origin to closest data point is 
+        $$ d(p,N) = \Big(1 - \frac{1}{2}^{1/N} \Big)^{1/p}$$                    {#eq:2.24}
+        #. For $N=500$, $p=10$, $d(p,N)\approx 0.52$, more than halfway to the 
+           boundary of the sample
+        #. This is a problem b/c the data points are closer to the edge than to another
+           point
+            * Estimating at the edge of a data set is fraught b/c it leads to extrapolation
+              instead of interpolation.
+            * This is intuitive, he has just formalized it.
+#. He gives an example - which I'm skipping, but it results in the eqn for the mean squared
+   error (MSE) for estimating $f(0)$ in a deterministic case
+    $$ \begin{aligned}
+       \text{MSE}(x_{0}) & = \text{E}_{\mathcal{T}}[f(x_{0} - \hat{y}_{0}]^{2} \\ 
+                         & = \text{E}_{\mathcal{T}}[\hat{y}_{0} - \text{E}_{\mathcal{T}}(\hat{y}_{0}]^{2} + [\text{E}_{\mathcal{T}}(\hat{y}_{0} - f(x_{0})]^{2} \\ 
+                         & = \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0})
+       \end{aligned}
+    $$                                                                          {#eq:2.25}
+    a) QUESTION : Derivation here?
+#. STOPPED on p24 - skimmed ahead to be prepared
     
+    
+
 
     
 
@@ -204,7 +299,9 @@ Jargon
        functions?
     #) How do we go from eqn \ref{eq:2.12} to eqn \ref{eq:2.13}
     
-
+#. To Do
+    a) Work on derivation fo eqn \ref{eq:2.9} to eqn \ref{eq:2.14}
+    a) Work on derivation fo eqn \ref{eq:2.16}
 
 
 2.5 Local Methods in High Dimensions
@@ -219,3 +316,14 @@ Jargon
         #. 
     
 #. A Statistical Model for the Joint Distribution Pr(X, Y)
+
+
+
+Exercises
+==========================
+1. Exercises that I think would be worth doing:
+    a) 2.2 - Done. See \code{bayes.py}
+    #) 2.3
+    #) 2.5
+    #) Either 2.7 OR 2.9, not both
+    

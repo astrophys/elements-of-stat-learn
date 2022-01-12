@@ -95,7 +95,7 @@ Jargon
     a) The $k$-nearest neighbor fit (where $N_{k}(x)$ is neighborhood of $x$ with $k$
        closest points.
         $$ \hat{Y}(x) = \frac{1}{k} \sum_{x_{i} \in N_{k}(x)} y_{i}$$    {#eq:2.8}
-    #) See \code{nearest_neighbor.py} for implementation details
+    #) See \code{nearest\_neighbor.py} for implementation details
     #) When $k$ = 1, it corresponds to a \emph{Voronoi tessellation}
         #. NONE of the points are misclassified
         #. It is grossly overfitted
@@ -127,9 +127,85 @@ Jargon
 
 2.4 Statistical Decision Theory
 ==========================
-Stopped here
+1. Background
+    a) Conditional probability
+        #. Given like $\text{Pr}(Y|X)$ 
+        #. Said like "Probability of $Y$ given $X$"
+        #. Example 1 : (from wiki), 
+            * The probability of anyone having a cough is 
+                $$\text{Pr}(cough) = 5%$$
+              but, if a person is sick, that percentage may go up significantly, e.g.
+                $$\text{Pr}(cough|sick) = 75%$$
+        #. $\text{Pr}(Y|X)$ = Conditional Probility
+        #. $\text{Pr}(Y)$   = Unconditional Probility
+        #. If $\text{Pr}(Y|X) = \text{Pr}(Y)$ then $X$ and $Y$ are independent
+        #. Example 2 : (from wiki), 
+            * The probability of testing positive ($A$) if infected with dengue ($B$) is 90%, 
+                $$\text{Pr}(A|B) = 90%$$
+            * However there are high false positive rates in the dengue test, only 15% of
+              positive tests are from people with dengue, ie
+                $$\text{Pr}(B|A) = 15%$$
+    #) Bayes' theorem
+        $$\text{Pr}(A|B) = \frac{\text{Pr}(B|A) \text{Pr}(A)}{\text{B}}$$
+        
+            
+#. Consider variables : 
+    a) $X \in \mathbb{R}^{p}$ be a random input vector. 
+    #) $Y \in \mathbb{R}$ be the random output variable.  
+    #) $X$ and $Y$ are related by the joint probability distribution, $\text{Pr}(X,Y)$
+    #) Want a function $f(X)$ to predict $\hat{Y}$ given $X$
+    #) Introduce \emph{loss function} $L(Y,f(X)) = (Y - f(X))^{2}$ to penalize prediction
+       error
+    #) The Expected Prediction Error (EPE)
+        $$ \text{EPE}(f) = \text{E}(Y - f(X))^{2}$$                             {#eq:2.9}
+        $$ \text{EPE}(f) = \int [y - f(x)]^{2}\text{Pr}(dx,dy)$$                {#eq:2.10}
+    #) Conditionnig, i.e. factoring 
+        $$\text{Pr}(X,Y) = \text{Pr}(Y|X)\text{Pr}(X)$$
+       where
+        $$\text{Pr}(Y|X) = \text{Pr}(Y,X)/\text{Pr}(X)$$
+    #) Using this in eqn \ref{eq:2.10}
+        $$ \text{EPE}(f) = \int [y - f(x)]^{2}\text{Pr}(dy|dx)\text{Pr}(dx)$$  
+       some magic...I can understand or sort of see how you get expectation values, but still
+       the math needs explained to me.
+        $$ \text{EPE}(f) = \text{E}_{X} \text{E}_{Y|X} ([Y-f(X)]^{2}|X)$$       {#eq:2.11}
+    #) Once again, we want to minimize eqn \ref{eq:2.11} to get $f(x)$
+        $$ f(x) = \text{argmin}_{c} \text{E}_{Y|X} ([Y-c]^{2}|X=x)$$            {#eq:2.12}
+       where $X=x$ is the conditional mean
+    #) Solution is 
+        $$ f(x) = \text{E}(Y|X=x)$$                                             {#eq:2.13}
+    #) Can ask for the average of all the $y_{i}$'s with input $x_{i} = x$, but usually
+       there is only one $y_{i}$ for each $x_{i}$
+        $$ f(x) = \text{Average}(y_{i}|x_{i} \in N_{k}(x))$$                    {#eq:2.14}
+       where $N_{k}(x)$ is the neighborhood containing $k$ points in $T$ closest to x.
+       Some approximations : 
+        #. Expectation is approx by averaging over sample data
+        #. Conditioning (in sense of conditional probability) at a point is relaxed to 
+           conditioning on some region "close" to the target point
+    #) QUESTION : How do I get from eqns (\ref{eq:2.11} = \ref{eq:2.14})?
+    #) Consider eqn \ref{eq:2.14} as $N$ (and $k$) go large. 
+        #. $k/N \rightarrow 0$
+        #. $\hat{f}(x) \rightarrow \text{E}(Y|X=x)$
+        #. Issues
+            * As dimensionality goes big, the rate of convergence goes to hell
+            * We need to determine $\text{E}(Y|X)$ frome the data, 
+    #) Consider linear regression w/in this framework
+        
+    
+
+    
+
+
 #. Questions
     a) $E_{x}$ = expectation value?
+        #. I think so
+    #) I don't understand the notation in eqn \ref{eq:2.10}
+    #) I don't understand the math going from eqn \ref{eq:2.10} to eqn \ref{eq:2.11}?
+       How do I handle dealing with differentials in joint probability distribution
+       functions?
+    #) How do we go from eqn \ref{eq:2.12} to eqn \ref{eq:2.13}
+    
+
+
 
 2.5 Local Methods in High Dimensions
 ==========================
@@ -143,4 +219,3 @@ Stopped here
         #. 
     
 #. A Statistical Model for the Joint Distribution Pr(X, Y)
-#. 

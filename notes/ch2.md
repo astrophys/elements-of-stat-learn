@@ -159,6 +159,11 @@ Jargon
     #) The Expected Prediction Error (EPE)
         $$ \text{EPE}(f) = \text{E}(Y - f(X))^{2}$$                             {#eq:2.9}
         $$ \text{EPE}(f) = \int [y - f(x)]^{2}\text{Pr}(dx,dy)$$                {#eq:2.10}
+        #. QUESTION : Why is the $dx$, $dy$ w/in $\text{Pr}()$? I could understand better
+                      if it was $\text{Pr}(X,Y)dx dy$?
+        #. ANSWER   : It is awkward notation, maybe it should be
+                      $\text{E}_{X} = \int x p(x) dx$? where $p(x)$ is the probability 
+                      density function. He thinks Hastie means $\int (y-f(x))^{2} Pr(X,Y)dx dy$
     #) Conditionnig, i.e. factoring 
         $$\text{Pr}(X,Y) = \text{Pr}(Y|X)\text{Pr}(X)$$
        where
@@ -182,6 +187,7 @@ Jargon
         #. Conditioning (in sense of conditional probability) at a point is relaxed to 
            conditioning on some region "close" to the target point
     #) QUESTION : How do I get from eqns (\ref{eq:2.11} = \ref{eq:2.14})?
+    #) ANSWER   : See the ANSWER above regarding eqn \ref{eq:2.10}
     #) Consider eqn \ref{eq:2.14} as $N$ (and $k$) go large. 
         #. $k/N \rightarrow 0$
         #. $\hat{f}(x) \rightarrow \text{E}(Y|X=x)$
@@ -204,6 +210,8 @@ Jargon
               values in eqn \ref{eq:2.16} with averages over the training data.
             * QUESTION : How?
         #. QUESTION : How do I go from above to eqn \ref{eq:2.16}?
+        #. ANSWER   : I think the answer to the notation question for eqn \ref{eq:2.9} will 
+                      help here
     #) Nearest neighbors and least squares approximate conditional expectations by averages.
         #. Differ in model assumptions 
             * Least squares assumes f(x) is well approximated by a globally linear
@@ -220,6 +228,8 @@ Jargon
            assuming additivity.
             * Often unrealistic
         #. QUESTION : I need some intuition here
+        #. ANSWER   : He is breaking up the independence of each independent variable
+                      s.t. there are no cross terms, e.g. leaving out $2xy$ from 
     #) Are we happy with eqn \ref{eq:2.11}?
         #. Consider replacing the quadratic $L_{2}$ loss function with a linear one
             $$ L_{1} = \text{E}|Y-f(X)| $$
@@ -235,7 +245,12 @@ Jargon
             * $L(k,l)$ is price paid to classify observation to class $\mathcal{G}_{k}$ as
               $\mathcal{G}_{l}$ 
             * QUESTION : What is special about a matrix with trace = 0?
+            * ANSWER   : 'There is a special property for every kind of matrix'. It is
+                         b/c it is a penalty matrix, which is why you aren't penalized for
+                         correct answers. 
+                + (Nathaneal suggests that it is a matrix full of ones with off diags being 0)
         #. QUESTION : Jargon here...
+        #. ANSWER   : $card(\mathcal{G})$ is `cardinality', so 
         #. Assume \emph{zero-one} loss function where misclassifications are charged single
            unit, then 
             $$ \text{EPE} = \text{E}[L(G,\hat{G}(X))]$$                         {#eq:2.19}
@@ -249,6 +264,9 @@ Jargon
         #. eqn \ref{eq:2.23} is the Baye's classifier
             * QUESTION : To properly use, we need a-priori knowledge, if we don't have 
                          a-priori knowledge, what do we do?
+            * ANSWER   : Yes, if you are handled a pile of data, you need to have some
+                         knowledge before hand. Then he goes on to say here is how this
+                         theory applies to different cases (e.g. linear regression)
            
 
 2.5 Local Methods in High Dimensions
@@ -257,6 +275,8 @@ Jargon
     a) Could find optimal conditional expectation by $k$-nearest neighbor averaging,
        but breaks down at high dimension
         #. QUESTION : How would we do this anyways?
+        #. ANSWER   : In last section he was using a-priori knowledge, but if you don't 
+                      have that, you can use $k$-nearest neighbors can approximate that
     #) Basically, as dimensionality increases, you have to ever increase the sampling of
        the space to adequately train your model
         #. E.g to sample 10% of the data (in 10D space) to form a local average, you need
@@ -276,7 +296,7 @@ Jargon
 #. He gives an example - which I'm skipping, but it results in the eqn for the mean squared
    error (MSE) for estimating $f(0)$ in a deterministic case
     $$ \begin{aligned}
-       \text{MSE}(x_{0}) & = \text{E}_{\mathcal{T}}[f(x_{0} - \hat{y}_{0}]^{2} \\ 
+       \text{MSE}(x_{0}) & = \text{E}_{\mathcal{T}}[f(x_{0}) - \hat{y}_{0}]^{2} \\ 
                          & = \text{E}_{\mathcal{T}}[\hat{y}_{0} - \text{E}_{\mathcal{T}}(\hat{y}_{0}]^{2} + [\text{E}_{\mathcal{T}}(\hat{y}_{0} - f(x_{0})]^{2} \\ 
                          & = \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0})
        \end{aligned}

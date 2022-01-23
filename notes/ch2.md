@@ -301,7 +301,33 @@ Jargon
                          & = \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0})
        \end{aligned}
     $$                                                                          {#eq:2.25}
-    a) QUESTION : Derivation here?
+    a) Let's do the derivation of eqn \ref{eq:2.25} following Wikipedia's derivation of
+       the [Mean Squared Error]{https://en.wikipedia.org/wiki/Mean_squared_error}.
+        #. Consider $n$ observations of variable $Y$ with n predictions $\hat{Y}$ 
+           (think least-squares fit), the mean of the squared errors is :
+            $$                                                                          
+                \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (\hat{Y}_{i} - Y_{i})^{2}
+            $$                                                                          
+        #. This is really the expectation value of the the squared errors...
+            $$                                                                          
+            \begin{aligned}
+                \text{MSE} & = \text{E}\Big[(\hat{Y} - Y)^{2}\Big] \\ 
+                           & = \text{E}\Big[(\hat{Y} - \underbrace{E[\hat{Y}] + E[\hat{Y}]}_{\text{adding 0}} - Y)^{2}\Big] \\ 
+                           & = \text{E}\Big[(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)\Big] \\ 
+                           & = \text{E}\Big[\hat{Y}^{2} - \hat{Y}E[\hat{Y}] + \hat{Y}E[\hat{Y}] - \hat{Y}Y -E[\hat{Y}]\hat{Y} + (E[\hat{Y}])^{2} - (E[\hat{Y}])^{2} + E[\hat{Y}]Y + \\
+                           &   \hspace{8mm} E[\hat{Y}]\hat{Y} - (E[\hat{Y}])^{2} + (E[\hat{Y}])^{2}  - E[\hat{Y}]Y - Y\hat{Y} + Y E[\hat{Y}] - Y E[\hat{Y}] + Y^{2}\Big]        \\
+            \end{aligned}
+            $$                                                                          
+           Rearrange Terms
+            $$                                                                          
+            \begin{aligned}
+                \text{MSE} & = \text{E}\Bigg[\Big(\hat{Y}^{2} - \hat{Y}E[\hat{Y}] - \hat{Y}E[\hat{Y}] + (E[\hat{Y}])^{2}\Big)  \Bigg]
+            \end{aligned}
+            $$                                                                          
+
+
+
+  
 #. STOPPED on p24 - skimmed ahead to be prepared
     
     

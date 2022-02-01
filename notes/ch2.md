@@ -442,10 +442,116 @@ Jargon
         #. Outcome 0 has $p(X)$, Outcome 1 has $1-p(X)$
         #. If Y is 0-1 coded, then $\text{E}(Y|X = x) = p(x)$
 #. 2.6.2 : Supervised Learning
-    a) Suppose
+    a) Assumes that the data fits a function, like eqn \ref{eq:2.29}
+    #) Uses a \emph{teacher}
+        #. Observe training set, $\mathcal{T} = (x_{i}, y_{i}), i = 1, ..., N$
+        #. Learning algorithm modifies input / output relationship $\hat{f}$ in response to
+           differences in $y_{i} - \hat{f}(x_{i})$
+            * \emph{learning by example}
+#. 2.6.3 : Function Approximation
+    a) Mathematicians and statistitions view ML as function approximation in
+       $\mathbb{R}^{p}$
+        #. Data pairs ${x_{i}, y_{i}}$ are points in $(p+1)$-dimensional space
+        #. $f(x_{i})$ in eqn \ref{eq:2.29} is in $p$-dimensional space
+    #) Many approx. have associated with it $\theta$ that can be modified
+        #. In $f(x) = x^{T}\beta$, $\theta = \beta$
+        #. \emph{linear basis expansions}
+            $$ f_{\theta}(x) = \sum_{k=1}^{K} h_{k}(x)\theta_{k}$$              {#eq:2.30}
+            * $h_{k}$ : set of functions / transformation  of input vector $x$, e.g.
+                + (e.g. polynomials, trig)
+                + sigmoids transformation (used in neural networks)  
+            $$ h_{k}(x) = \frac{1}{1+ e^{-x^{T}\beta_{k}}} $$                   {#eq:2.31}
+                + Estimate params using RSS : 
+            $$
+                \text{RSS}(\theta) = \sum_{i=1}^{N} (y_{i} - f_{\theta}(x_{i}))^{2}
+            $$                                                                  {#eq:2.32}
+        #. Imagine the functions approx as a surface in $p+1$ space
+            * See : Fig. 2.10
+            * Verticle component is $y$. 
+            * Try to get surface as close to observed points
+                + Should point out overfitting is a problem here
+                + Linear model and basis functions (assuming no hidden params) are
+                  minimization problem. 
+                + More complex problems require iterative methods or numerical optimization
+                + Least squares is convenient, but isn't the only criteria and sometimes 
+                  doesn't make sense.
+    #) Maximum liklihood estimation
+        #. Consider random sample, $y_{i}$, $i=1,...,N$ from density
+           $\text{Pr}_{\theta}(y_{i})$
+            * log-probability of observed sample is 
+            $$
+                L(\theta) = \sum_{i=1}^{N} \text{log} \text{Pr}_{\theta}(y_{i})
+            $$                                                                  {#eq:2.33}
+            * QUESTION : log base 10 or $e$? Probably doesn't matter.
+        #. Assumes that most reasonable values of $\theta$ for which prob of observed
+           sample is largest
+            * Least squares in eqn \ref{eq:2.29} with $\epsilon \sim N(0, \sigma^{2})$ is 
+              equivalent to maximum likelihood using 
+            $$
+                \text{Pr}(Y|X,\theta) = N(f_{\theta}(X), \sigma^{2})
+            $$                                                                  {#eq:2.34}
+            * QUESTION : I'm guessing $N$ in this case is the Gaussian function?
+            * QUESTION : How do they go from above statement to eqn \ref{eq:2.34}
+            * Plug eqn \ref{eq:2.34} into eqn \ref{eq:2.33}
+            $$
+                \begin{aligned}
+                L(\theta) & = \sum_{i=1}^{N} \text{log} \text{Pr}_{\theta}(y_{i}) \\
+                          & = \sum_{i=1}^{N} \text{log} N(f_{\theta}(X), \sigma^{2}) \\
+                          & = \sum_{i=1}^{N} \text{log}\Big(\frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(y_{i} - f_{\theta}(X))^{2}}{2\sigma^{2}}}\Big) \\
+                          & = \sum_{i=1}^{N}
+                              \Big(
+                                \text{log} \big( \frac{1}{\sigma \sqrt{2\pi}} \big) +
+                                \text{log} \big( e^{-\frac{(y_{i} - f_{\theta}(X))^{2}}{2\sigma^{2}}}\big)
+                              \Big) \\
+                          & = \sum_{i=1}^{N}
+                              \Big(
+                                - \text{log} \big( \sigma \sqrt{2\pi} \big)
+                                - \frac{(y_{i} - f_{\theta}(X))^{2}}{2\sigma^{2}}\big)
+                              \Big) \\
+                          & = \sum_{i=1}^{N}
+                              \Big(
+                                - \text{log} \big( \sigma \big)
+                                - \text{log} \big((2\pi)^{\frac{1}{2}}) \big)
+                                - \frac{(y_{i} - f_{\theta}(X))^{2}}{2\sigma^{2}}\big)
+                              \Big) \\
+                          & \text{Pull out first two (constant) terms, incurring a factor of N} \\
+                          & =
+                                - N \text{log} \big( \sigma \big)
+                                - \frac{N}{2} \text{log} \big(2\pi \big)
+                                + \sum_{i=1}^{N} - \frac{(y_{i} - f_{\theta}(X))^{2}}{2\sigma^{2}} \\
+                          & =
+                                - N \text{log} \big( \sigma \big)
+                                - \frac{N}{2} \text{log} \big(2\pi \big)
+                                - \frac{1}{2\sigma^{2}} \sum_{i=1}^{N} (y_{i} - f_{\theta}(X))^{2}
+                \end{aligned}
+            $$                                                                  {#eq:2.35}
+            Last term in eqn \ref{eq:2.35} is the $\text{RSS}(\theta)$ up to a negative
+            multiplier.
+            * QUESTION : Implied dimension? Gaussian normalization depends on dimensionality
+    #) Consider a multinomial likelihood of regression function $\text{Pr}(P|X)$ for a
+       qualitative output $G$. 
+        #. Conditional probability of each class given $X$ : 
+            $$ \text{Pr}(G = G_{k}|X = x) = p_{k,\theta}(x), k = 1, ..., K $$
+           yields log-likelihood
+            $$ L(\theta) = \sum_{i=1}^{N} \text{log}(p_{g_{i},\theta}(x_{i}) $$ {#eq:2.36}
+        #. QUESTION : Is K the number of samples? or classes? - I think classes
+        
+2.7 Structured Regression Models
+==========================
+1. Observation
+    a) Local methods (e.g. nearest-neighbors) focus on estimating function at a point
+        #. Screwed in high dimensions (see curse of dimensionality)
+        #. Inappropriate when there is a structured approach available (i.e. data follows a 
+           functions)
+#. Difficulty of the Problem
+STOPPED HERE
 
 
+2.8 Classes of Restricted Estimators
+==========================
   
+2.9 Model Selection and the Bias-Variance Tradeoff
+==========================
 <!--
                            & = \text{E}_{T}\Big[(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)\Big] \\ 
                            & = \text{E}_{T}\Big[\hat{Y}^{2} - \hat{Y}E[\hat{Y}] + \hat{Y}E[\hat{Y}] - \hat{Y}Y -E[\hat{Y}]\hat{Y} + (E[\hat{Y}])^{2} - (E[\hat{Y}])^{2} + E[\hat{Y}]Y + \\

@@ -23,6 +23,7 @@ header-includes:
             urlcolor=blue,
             pdfborderstyle={/S/U/W 1}}
     \usepackage{mathtools}
+    \usepackage{cancel}
 ---
 \definecolor{codegray}{gray}{0.9}
 \newcommand{\code}[1]{\colorbox{codegray}{\texttt{#1}}}
@@ -293,11 +294,24 @@ Jargon
             * Estimating at the edge of a data set is fraught b/c it leads to extrapolation
               instead of interpolation.
             * This is intuitive, he has just formalized it.
-#. He gives an example - which I'm skipping, but it results in the eqn for the mean squared
-   error (MSE) for estimating $f(0)$ in a deterministic case
+#. He gives an example - in which I'm skipping some of the details.
+    a) Consider 
+        #. 1000 training examples $x_{i}$ generated uniformly on [-1,1]^{p}
+        #. Assume true relationship between X and Y is :
+            $$ Y = f(X) = e^{-8||X||} $$
+        #. No measurement error.
+            * QUESTION : What would it look like with measurement error?
+        #. Training set it $T$
+        #. Compute \emph{mean squared error} (MSE), i.e.
+            * The mean of the squares of the error
+            * Squared to avoid adding in quadrature.
+            * $E_{T}$ is the 'mean'
+            * Summed over all the predictions ($\hat{y}_{i}$) of $y_{i}$ given $x_{i}$ 
+            * $f(x)$ is the truth value. It is the underlying relation
+        #. Problem is for estimating $f(0)$ in a deterministic case
     $$ \begin{aligned}
        \text{MSE}(x_{0}) & = \text{E}_{\mathcal{T}}[f(x_{0}) - \hat{y}_{0}]^{2} \\ 
-                         & = \text{E}_{\mathcal{T}}[\hat{y}_{0} - \text{E}_{\mathcal{T}}(\hat{y}_{0}]^{2} + [\text{E}_{\mathcal{T}}(\hat{y}_{0} - f(x_{0})]^{2} \\ 
+                         & = \text{E}_{\mathcal{T}}[\hat{y}_{0} - \text{E}_{\mathcal{T}}(\hat{y}_{0})]^{2} + [\text{E}_{\mathcal{T}}(\hat{y}_{0}) - f(x_{0})]^{2} \\ 
                          & = \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0})
        \end{aligned}
     $$                                                                          {#eq:2.25}
@@ -311,10 +325,65 @@ Jargon
         #. This is really the expectation value of the the squared errors...
             $$                                                                          
             \begin{aligned}
-                \text{MSE} & = \text{E}\Big[(\hat{Y} - Y)^{2}\Big] \\ 
-                           & = \text{E}\Big[(\hat{Y} - \underbrace{E[\hat{Y}] + E[\hat{Y}]}_{\text{adding 0}} - Y)^{2}\Big] \\ 
-                           & = \text{E}\Big[(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)\Big] \\ 
-                           & = \text{E}\Big[\hat{Y}^{2} - \hat{Y}E[\hat{Y}] + \hat{Y}E[\hat{Y}] - \hat{Y}Y -E[\hat{Y}]\hat{Y} + (E[\hat{Y}])^{2} - (E[\hat{Y}])^{2} + E[\hat{Y}]Y + \\
+                \text{MSE} & = \text{E}_{T}\Big[f(x_{0}) - \hat{y}_{0})^{2}\Big] \\ 
+                           & \text{  Adding 0}    \\
+                           & = \text{E}_{\mathcal{T}}\Big[\overbrace{f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]}^{x} + \overbrace{\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}})^{2}}^{y}\Big] \\ 
+                           & \text{  Expanding like any other quadratic}    \\
+                           & = \text{E}_{\mathcal{T}}\Big[f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}] + \text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}})^{2}\Big] \\ 
+                           & = \text{E}_{\mathcal{T}}\Big[\overbrace{\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}}^{x^{2}} - \overbrace{2\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y}_{0}\big)}^{2xy}+ \overbrace{\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}}\big)^{2}}^{y^{2}}\Big] \\ 
+                           & \text{  Recall that these are really integrals. Pull through $\text{E}_{\mathcal{T}}$}                   \\
+                           & = \text{E}_{\mathcal{T}}\Big[\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}\Big] - \text{E}_{\mathcal{T}}\Big[2\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y}_{0}\big)\Big] + \text{E}_{\mathcal{T}}\Big[\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}}\big)^{2}\Big] \\ 
+                           & \text{Recall we have 1000 experiments at $x_{0}=0$, so the}\\
+                           & \text{expectation value $\text{E}_{\mathcal{T}}(\text{E}_{\mathcal{T}}[y_{0}])$ is a constant} \\
+                           & \text{also expectation value $[f(x_{0}) - \text{E}_{\mathcal{T}}(y_{0})]$ is a constant} \\
+                           & = \text{E}_{\mathcal{T}}\Big[\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}\Big] - 2\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big) \text{E}_{\mathcal{T}}\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y}_{0}\big) +\text{E}_{\mathcal{T}}\Big[\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}}\big)^{2}\Big] \\ 
+                           & = \text{E}_{\mathcal{T}}\Big[\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}\Big]
+                             - 2\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big) \cancelto{0}{(\text{E}_{\mathcal{T}}[\text{E}_{\mathcal{T}}[\hat{y}_{0}]] - \text{E}_{\mathcal{T}}[\hat{y}_{0}])}
+                             + \text{E}_{\mathcal{T}}\Big[\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}}\big)^{2}\Big] \\ 
+                           & = \text{E}_{\mathcal{T}}\Big[\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}\Big]
+                             + \text{E}_{\mathcal{T}}\Big[\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}}\big)^{2}\Big] \\ 
+                           & \text{The expected value of $\hat{y}_{0}$ should be the truth value}\\
+                           & \text{so the second term is the \emph{bias} and the first term is the}\\ 
+                           & \text{\emph{variance} (i.e. how much each predicted value differs form the truth)}\\
+                           & = \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0})
+            \end{aligned}
+            $$
+    #) eqn \ref{eq:2.25} is the \emph{bias-variance decomposition}
+    #) QUESTION : What does $\text{E}_{\mathcal{T}}(\hat{y}_{0})$ mean?
+    #) QUESTION : For eqn \ref{eq:2.25} why is there an implicit sum for measuring MSE
+                  for a single point. This is a point of confusion for me. They must be doing
+                  1000 experiments at $x_{0} = 0$?
+    #) QUESTION : Is the logic in my last step reasonable?
+#. Consider that the relation between $Y$ and $X$ is linear
+    $$ Y = X^{T} \beta + \epsilon  $$                                           {#eq:2.26}
+   where $\epsilon \sim N(0,\sigma^{2})$ and we fit with least squares.
+    a) For arbitrary point $x_{0}$
+            $$
+            \begin{aligned}
+                \hat{y}_{0} & = x^{T}_{0} \hat{\beta} \\
+                                & = x^{T}_{0} \beta + \sum^{N}_{i=1}l_{i}(x_{0})\epsilon_{i}
+            \end{aligned}
+            $$                                           
+       where $l_{i}(x_{0})$ is the $i$th element of ${\bf X (X^{T}X)^{-1}} x_{0}$. B/c 
+       unbiased : 
+            $$
+            \begin{aligned}
+                \hat{y}_{0} & = x^{T}_{0} \hat{\beta} \\
+                            & = x^{T}_{0} \beta + \sum^{N}_{i=1}l_{i}(x_{0})\epsilon_{i}
+            \end{aligned}
+            $$                                                                   {#eq:2.27}                   
+#. QUESTION : 
+    a) Explain $E_{y_{0}|x_{0}}$ in eqn \ref{eq:2.27}
+   
+
+
+
+  
+#. STOPPED on p24 - skimmed ahead to be prepared
+    
+<!--
+                           & = \text{E}_{T}\Big[(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)\Big] \\ 
+                           & = \text{E}_{T}\Big[\hat{Y}^{2} - \hat{Y}E[\hat{Y}] + \hat{Y}E[\hat{Y}] - \hat{Y}Y -E[\hat{Y}]\hat{Y} + (E[\hat{Y}])^{2} - (E[\hat{Y}])^{2} + E[\hat{Y}]Y + \\
                            &   \hspace{8mm} E[\hat{Y}]\hat{Y} - (E[\hat{Y}])^{2} + (E[\hat{Y}])^{2}  - E[\hat{Y}]Y - Y\hat{Y} + Y E[\hat{Y}] - Y E[\hat{Y}] + Y^{2}\Big]        \\
             \end{aligned}
             $$                                                                          
@@ -324,12 +393,8 @@ Jargon
                 \text{MSE} & = \text{E}\Bigg[\Big(\hat{Y}^{2} - \hat{Y}E[\hat{Y}] - \hat{Y}E[\hat{Y}] + (E[\hat{Y}])^{2}\Big)  \Bigg]
             \end{aligned}
             $$                                                                          
-
-
-
-  
-#. STOPPED on p24 - skimmed ahead to be prepared
-    
+            COMPLETE LATER - Need to determine exactly what each term EXACTLY means
+-->
     
 
 

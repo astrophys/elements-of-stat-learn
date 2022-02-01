@@ -381,7 +381,7 @@ Jargon
                                   & = \text{Says to make use of eqn 3.8}\\
                                   & = \text{Var}(y_{0}|x_{0}) + \text{E}_{\mathcal{T}}[\hat{y}_{0} - \text{E}_{\mathcal{T}}\hat{y}_{0}]^{2} + [E_{\mathcal{T}}\hat{y}_{0} - x_{0}^{T}\beta]^{2} \\
                                   & = \text{Var}(y_{0}|x_{0}) + \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0}) \\
-                                  & = \sigma^{2} + \text{E}_{\mathcal{T}}x_{0}^{T}({\bf X}^{T}{\bf X}^{-1}x_{0}\sigma^{2} + 0^{2}\\
+                                  & = \sigma^{2} + \text{E}_{\mathcal{T}}x_{0}^{T}({\bf X}^{T}{\bf X}^{-1})x_{0}\sigma^{2} + 0^{2}\\
             \end{aligned}
             $$                                                                   {#eq:2.27}
         Incurred additional $\sigma^{2}$ in the prediction error b/c it is not deterministic
@@ -416,7 +416,34 @@ Jargon
 
 2.6 Statistical Models, Supervised Learning and Function Approximation
 ==========================
-   
+1. Goal to find useful approx of $\hat{f}(x)$ to the function $f(x)$
+    a) Section 2.4, squared error loss leads to regression function $f(x) = \text{E}(Y|X=x)$.  
+    #) Nearest neighbors can be thought of direct estimates of this conditional expectation.
+       Fail in two ways
+        #. If high dim on input space, nearest neighbors need not be close to target point
+           and large errors result
+        #. If special structure is known, this can reduce both bias and variance of
+           estimates
+#. 2.6.1 : A statistical model for the joint distribution $\text{Pr}(X,Y)$
+    a) Suppose our data arose from the statistical model
+        $$ Y = f(X) + \epsilon  $$                                           {#eq:2.29}
+       where random error $\epsilon$ has $\text{E}(\epsilon) = 0$ and is independent of
+       $X$. 
+        #. Assume errors are independent and identically distributed
+    #) QUESTION : I don't understand how models link to conditional probability
+    #) For most input-output pairs $(X,Y)$, it will not have a deterministic relationship
+       $Y = f(X)$
+        #. Wow. I guess I assumed there would be underlying relationships (even if it
+           can't be measured). Else, why do ML?
+    #) Can have complex dependence of errors and variance on $X$
+        #. Additive error model precludes this.
+    #) Consider example of cardinality problem with two-class data
+        #. Assume independent binary trials
+        #. Outcome 0 has $p(X)$, Outcome 1 has $1-p(X)$
+        #. If Y is 0-1 coded, then $\text{E}(Y|X = x) = p(x)$
+#. 2.6.2 : Supervised Learning
+    a) Suppose
+
 
   
 <!--

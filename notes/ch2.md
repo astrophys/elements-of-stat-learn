@@ -371,16 +371,54 @@ Jargon
                 \hat{y}_{0} & = x^{T}_{0} \hat{\beta} \\
                             & = x^{T}_{0} \beta + \sum^{N}_{i=1}l_{i}(x_{0})\epsilon_{i}
             \end{aligned}
-            $$                                                                   {#eq:2.27}                   
-#. QUESTION : 
+            $$                                                                   
+       Deriving :
+            $$
+            \begin{aligned}
+                \text{EPE}(x_{0}) & = \text{E}_{y_{0}|x_{0}} \text{E}_{\mathcal{T}}(y_{0} - \hat{y_{0}})^{2} \\
+                                  & = \text{I see how you sub in eqn \ref{eq:2.25}, but I'm}\\
+                                  & = \text{not sure what to do after that.}\\
+                                  & = \text{Says to make use of eqn 3.8}\\
+                                  & = \text{Var}(y_{0}|x_{0}) + \text{E}_{\mathcal{T}}[\hat{y}_{0} - \text{E}_{\mathcal{T}}\hat{y}_{0}]^{2} + [E_{\mathcal{T}}\hat{y}_{0} - x_{0}^{T}\beta]^{2} \\
+                                  & = \text{Var}(y_{0}|x_{0}) + \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0}) \\
+                                  & = \sigma^{2} + \text{E}_{\mathcal{T}}x_{0}^{T}({\bf X}^{T}{\bf X}^{-1}x_{0}\sigma^{2} + 0^{2}\\
+            \end{aligned}
+            $$                                                                   {#eq:2.27}
+        Incurred additional $\sigma^{2}$ in the prediction error b/c it is not deterministic
+        like eqn \ref{eq:2.25}.  Bias is $0^{2}$ term and variance depends on $x_{0}$. If
+        $N$ is large and $\mathcal{T}$ is selected at random. Assuming $\text{E}(X) = 0$
+        and ${\bf X}^{T}{\bf X} \rightarrow N\text{Cov}(X)$ s.t.
+            $$
+            \begin{aligned}
+                \text{E}_{x_{0}}\text{EPE}(x_{0}) & \sim \text{E}_{x_{0}} x_{0}^{T} \text{Cov}(X)^{-1}x_{0}\sigma^{2}/N + \sigma^{2} \\
+                                  & = \text{Says to make use cyclic property of the trace}\\
+                                  & = \text{trace}[\text{Cov}(X)^{-1}\text{Cov}(x_{0})]\sigma^{2}/N + \sigma^{2} \\
+                                  & = \sigma^{2}(p/N) + \sigma^{2}
+            \end{aligned}
+            $$                                                                   {#eq:2.28}
+        By using restrictions (e.g. $N$ is large, or $\sigma^{2}$ is small, variance growth
+        is small (0 in deterministic case).
+
+#. QUESTIONS : 
     a) Explain $E_{y_{0}|x_{0}}$ in eqn \ref{eq:2.27}
+    #) The EPE and MSE look identical. Compare eqn \ref{eq:2.9} and eqn \ref{eq:2.25} What's the difference? 
+    #) I see that in eqn \ref{eq:2.27}, EPE($x_{0}$) depends on $x_{0}$ while in
+       eqn \ref{eq:2.9} it depends on $f$, which is like $y$. WHat is going on here?
+    #) How does eqn 3.8 come into eqn \ref{eq:2.27}?
+    #) How is there no bias in eqn \ref{eq:2.28}?
+    #) Why is there no bias in the linear case but there is in the deterministic case?
+
+#. Discusses intuition from eqns \ref{eq:2.27} and \ref{eq:2.28}
+    a) Whole variety of models that try to stradle strictly linear models and the highly
+       flexible 1-nearest neighbor models.
+        #. Models impose assumptions and biases to avoid exponential growth in complexity
+           in high dimensions.
+
+2.6 Statistical Models, Supervised Learning and Function Approximation
+==========================
    
 
-
-
   
-#. STOPPED on p24 - skimmed ahead to be prepared
-    
 <!--
                            & = \text{E}_{T}\Big[(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)(\hat{Y} - E[\hat{Y}] + E[\hat{Y}] - Y)\Big] \\ 
                            & = \text{E}_{T}\Big[\hat{Y}^{2} - \hat{Y}E[\hat{Y}] + \hat{Y}E[\hat{Y}] - \hat{Y}Y -E[\hat{Y}]\hat{Y} + (E[\hat{Y}])^{2} - (E[\hat{Y}])^{2} + E[\hat{Y}]Y + \\

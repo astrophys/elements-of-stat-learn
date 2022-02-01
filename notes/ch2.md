@@ -301,6 +301,7 @@ Jargon
             $$ Y = f(X) = e^{-8||X||} $$
         #. No measurement error.
             * QUESTION : What would it look like with measurement error?
+            * ANSWER   : see eqn \ref{eq:2.26}
         #. Training set it $T$
         #. Compute \emph{mean squared error} (MSE), i.e.
             * The mean of the squares of the error
@@ -325,7 +326,7 @@ Jargon
         #. This is really the expectation value of the the squared errors...
             $$                                                                          
             \begin{aligned}
-                \text{MSE} & = \text{E}_{T}\Big[f(x_{0}) - \hat{y}_{0})^{2}\Big] \\ 
+                \text{MSE} & = \text{E}_{T}\Big[(f(x_{0}) - \hat{y}_{0})^{2}\Big] \\ 
                            & \text{  Adding 0}    \\
                            & = \text{E}_{\mathcal{T}}\Big[\overbrace{f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]}^{x} + \overbrace{\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}})^{2}}^{y}\Big] \\ 
                            & \text{  Expanding like any other quadratic}    \\
@@ -334,8 +335,8 @@ Jargon
                            & \text{  Recall that these are really integrals. Pull through $\text{E}_{\mathcal{T}}$}                   \\
                            & = \text{E}_{\mathcal{T}}\Big[\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}\Big] - \text{E}_{\mathcal{T}}\Big[2\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y}_{0}\big)\Big] + \text{E}_{\mathcal{T}}\Big[\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}}\big)^{2}\Big] \\ 
                            & \text{Recall we have 1000 experiments at $x_{0}=0$, so the}\\
-                           & \text{expectation value $\text{E}_{\mathcal{T}}(\text{E}_{\mathcal{T}}[y_{0}])$ is a constant} \\
-                           & \text{also expectation value $[f(x_{0}) - \text{E}_{\mathcal{T}}(y_{0})]$ is a constant} \\
+                           & \text{expectation value $\text{E}_{\mathcal{T}}(\text{E}_{\mathcal{T}}[\hat{y}_{0}])$ is a constant} \\
+                           & \text{also expectation value $[f(x_{0}) - \text{E}_{\mathcal{T}}(\hat{y}_{0})]$ is a constant} \\
                            & = \text{E}_{\mathcal{T}}\Big[\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}\Big] - 2\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big) \text{E}_{\mathcal{T}}\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y}_{0}\big) +\text{E}_{\mathcal{T}}\Big[\big(\text{E}_{\mathcal{T}}[\hat{y}_{0}] - \hat{y_{0}}\big)^{2}\Big] \\ 
                            & = \text{E}_{\mathcal{T}}\Big[\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big)^{2}\Big]
                              - 2\big(f(x_{0}) - \text{E}_{\mathcal{T}}[\hat{y_{0}}]\big) \cancelto{0}{(\text{E}_{\mathcal{T}}[\text{E}_{\mathcal{T}}[\hat{y}_{0}]] - \text{E}_{\mathcal{T}}[\hat{y}_{0}])}
@@ -350,10 +351,16 @@ Jargon
             $$
     #) eqn \ref{eq:2.25} is the \emph{bias-variance decomposition}
     #) QUESTION : What does $\text{E}_{\mathcal{T}}(\hat{y}_{0})$ mean?
+    #) ANSWER   : Expectation value of ALL the predicted $\hat{y_{0}}$, N=1000
     #) QUESTION : For eqn \ref{eq:2.25} why is there an implicit sum for measuring MSE
                   for a single point. This is a point of confusion for me. They must be doing
                   1000 experiments at $x_{0} = 0$?
+    #) ANSWER   : $x_{0}$ is at 0, but we have 1000 random samples over [-1,1]
+    #) SUGGESTION : Follow 2nd derivation on Wikipedia. Less challenging to believe.
+                  $\mathbb{E}$
     #) QUESTION : Is the logic in my last step reasonable?
+    #) ANSWER   : He thinks so. Precision vs. Accuracy. I need to drop the expectation value
+                  on my 2nd term on my last line.
 #. Consider that the relation between $Y$ and $X$ is linear
     $$ Y = X^{T} \beta + \epsilon  $$                                           {#eq:2.26}
    where $\epsilon \sim N(0,\sigma^{2})$ and we fit with least squares.
@@ -376,9 +383,9 @@ Jargon
             $$
             \begin{aligned}
                 \text{EPE}(x_{0}) & = \text{E}_{y_{0}|x_{0}} \text{E}_{\mathcal{T}}(y_{0} - \hat{y_{0}})^{2} \\
-                                  & = \text{I see how you sub in eqn \ref{eq:2.25}, but I'm}\\
-                                  & = \text{not sure what to do after that.}\\
-                                  & = \text{Says to make use of eqn 3.8}\\
+                                  & \text{I see how you sub in eqn \ref{eq:2.25}, but I'm}\\
+                                  & \text{not sure what to do after that.}\\
+                                  & \text{Says to make use of eqn 3.8}\\
                                   & = \text{Var}(y_{0}|x_{0}) + \text{E}_{\mathcal{T}}[\hat{y}_{0} - \text{E}_{\mathcal{T}}\hat{y}_{0}]^{2} + [E_{\mathcal{T}}\hat{y}_{0} - x_{0}^{T}\beta]^{2} \\
                                   & = \text{Var}(y_{0}|x_{0}) + \text{Var}_{\mathcal{T}}(\hat{y}_{0}) + \text{Bias}^{2}(\hat{y}_{0}) \\
                                   & = \sigma^{2} + \text{E}_{\mathcal{T}}x_{0}^{T}({\bf X}^{T}{\bf X}^{-1})x_{0}\sigma^{2} + 0^{2}\\
@@ -400,13 +407,24 @@ Jargon
         is small (0 in deterministic case).
 
 #. QUESTIONS : 
-    a) Explain $E_{y_{0}|x_{0}}$ in eqn \ref{eq:2.27}
-    #) The EPE and MSE look identical. Compare eqn \ref{eq:2.9} and eqn \ref{eq:2.25} What's the difference? 
-    #) I see that in eqn \ref{eq:2.27}, EPE($x_{0}$) depends on $x_{0}$ while in
-       eqn \ref{eq:2.9} it depends on $f$, which is like $y$. WHat is going on here?
-    #) How does eqn 3.8 come into eqn \ref{eq:2.27}?
-    #) How is there no bias in eqn \ref{eq:2.28}?
-    #) Why is there no bias in the linear case but there is in the deterministic case?
+    a) QUESTION : Explain $E_{y_{0}|x_{0}}$ in eqn \ref{eq:2.27}. I thought $x_{0}$ is a 
+                  single point at 0.
+    #) ANSWER : THe expected value of over all values of $y_{0}$ while keeping $x_{0}$. It
+                is the expectation value (recall the noise term, $\epsilon$) of all the $y_{0}$
+                given the $x_{0}$
+    #) QUESTION : The EPE and MSE look identical. Compare eqn \ref{eq:2.9} and eqn
+                  \ref{eq:2.25} What's the difference? 
+    #) ANSWER : Just that noise term.
+    #) QUESTION : I see that in eqn \ref{eq:2.27}, EPE($x_{0}$) depends on $x_{0}$ while in
+                  eqn \ref{eq:2.9} it depends on $f$, which is like $y$. WHat is going on here?
+    #) ANSWER   : Probably just two different ways to look at the same thing?
+    #) QUESTION : How does eqn 3.8 come into eqn \ref{eq:2.27} (exercise 2.5)?
+    #) ANSWER   : Unsure see : https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf for the derivation he followed
+    #) QUESTION : How is there no bias in eqn \ref{eq:2.28}?
+    #) ANSWER   : B/c you are starting from eqn \ref{eq:2.27}, it is 0. He doesn't have a good
+                  intuitive reason. Algebraicly he got it to disappear. 
+                    #. STOPPED HERE in discussion
+    #) QUESTION : Why is there no bias in the linear case but there is in the deterministic case?
 
 #. Discusses intuition from eqns \ref{eq:2.27} and \ref{eq:2.28}
     a) Whole variety of models that try to stradle strictly linear models and the highly

@@ -317,7 +317,7 @@ Jargon
        \end{aligned}
     $$                                                                          {#eq:2.25}
     a) Let's do the derivation of eqn \ref{eq:2.25} following Wikipedia's derivation of
-       the [Mean Squared Error]{https://en.wikipedia.org/wiki/Mean_squared_error}.
+       the [Mean Squared Error](https://en.wikipedia.org/wiki/Mean_squared_error).
         #. Consider $n$ observations of variable $Y$ with n predictions $\hat{Y}$ 
            (think least-squares fit), the mean of the squared errors is :
             $$                                                                          

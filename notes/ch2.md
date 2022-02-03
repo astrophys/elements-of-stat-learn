@@ -419,11 +419,10 @@ Jargon
                   eqn \ref{eq:2.9} it depends on $f$, which is like $y$. WHat is going on here?
     #) ANSWER   : Probably just two different ways to look at the same thing?
     #) QUESTION : How does eqn 3.8 come into eqn \ref{eq:2.27} (exercise 2.5)?
-    #) ANSWER   : Unsure see : https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf for the derivation he followed
+    #) ANSWER   : Unsure see : [waxworksmath](https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf) for the derivation he followed
     #) QUESTION : How is there no bias in eqn \ref{eq:2.28}?
     #) ANSWER   : B/c you are starting from eqn \ref{eq:2.27}, it is 0. He doesn't have a good
                   intuitive reason. Algebraicly he got it to disappear. 
-                    #. STOPPED HERE in discussion
     #) QUESTION : Why is there no bias in the linear case but there is in the deterministic case?
 
 #. Discusses intuition from eqns \ref{eq:2.27} and \ref{eq:2.28}
@@ -449,6 +448,9 @@ Jargon
        $X$. 
         #. Assume errors are independent and identically distributed
     #) QUESTION : I don't understand how models link to conditional probability
+    #) ANSWER   : See : [Continuous random variables](https://en.wikipedia.org/wiki/Conditional_expectation) to get 
+                  $$ f(x) = \text{E}[Y|X=x] = \int y \text{Pr}(Y|X)dy  $$
+                  converting the variables on wikipedia appropriately
     #) For most input-output pairs $(X,Y)$, it will not have a deterministic relationship
        $Y = f(X)$
         #. Wow. I guess I assumed there would be underlying relationships (even if it
@@ -509,7 +511,12 @@ Jargon
                 \text{Pr}(Y|X,\theta) = N(f_{\theta}(X), \sigma^{2})
             $$                                                                  {#eq:2.34}
             * QUESTION : I'm guessing $N$ in this case is the Gaussian function?
+            * ANSWER   : Yes.
             * QUESTION : How do they go from above statement to eqn \ref{eq:2.34}
+            * ANSWER   : Maybe it has to do with it is b/c in 
+                         $Y = f_{\theta}(X) + \epsilon$ where
+                         $\epsilong \sim N(0,\sigma^{2})$, you are just shifting your Gaussian
+                         $f_{\theta}(X)$
             * Plug eqn \ref{eq:2.34} into eqn \ref{eq:2.33}
             $$
                 \begin{aligned}
@@ -546,13 +553,15 @@ Jargon
             Last term in eqn \ref{eq:2.35} is the $\text{RSS}(\theta)$ up to a negative
             multiplier.
             * QUESTION : Implied dimension? Gaussian normalization depends on dimensionality
+            * ANSWER   : He agrees
     #) Consider a multinomial likelihood of regression function $\text{Pr}(P|X)$ for a
        qualitative output $G$. 
         #. Conditional probability of each class given $X$ : 
-            $$ \text{Pr}(G = G_{k}|X = x) = p_{k,\theta}(x), k = 1, ..., K $$
+            $$ \text{Pr}(G = \mathcal{G}_{k}|X = x) = p_{k,\theta}(x), k = 1, ..., K $$
            yields log-likelihood
             $$ L(\theta) = \sum_{i=1}^{N} \text{log}(p_{g_{i},\theta}(x_{i}) $$ {#eq:2.36}
         #. QUESTION : Is K the number of samples? or classes? - I think classes
+        #. ANSWER   : Classes. $G$ is the set of classes, $K$
         
 2.7 Structured Regression Models
 ==========================

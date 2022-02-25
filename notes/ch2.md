@@ -571,7 +571,7 @@ Jargon
         #. Inappropriate when there is a structured approach available (i.e. data follows a 
            functions)
 #. Difficulty of the Problem
-STOPPED HERE
+STOPPED HERE - Moved on to Ch3 for sake of expedience...
 
 
 2.8 Classes of Restricted Estimators

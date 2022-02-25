@@ -46,7 +46,7 @@ Jargon
 3.2 Variable Types and Terminology
 ==========================
 1. From Ch2, refresher on linear models :
-    a) Given input vector $X^{T} = (X_{1}, X_{2}, \ldots, X_{p}), with predicted output
+    a) Given input vector $X^{T} = (X_{1}, X_{2}, \ldots, X_{p})$, with predicted output
        $Y$, the model is :
         $$
             f(X) = \beta_{0} + \sum_{j=1}^{p} X_{j} \beta_{j}
@@ -73,7 +73,7 @@ Jargon
             * independent random draws OR
             * even if $x_{i}$'s aren't randomly draw, it holds if $y_{i}$'s are 
               conditionally independent given inputs $x_{i}$
-            * QUESTION : What does this EXACTY mean?
+            * QUESTION : What does this EXACTY mean? 
         #. Fig. 3.1 - Visualize as a hyperplane in $p + 1$ dimensional space where the $+1$
            is the $y$ dependent variable.
             * Makes no comment about validity of fit
@@ -112,6 +112,8 @@ Jargon
         $$                                                                      {#eq:3.7}
        From eqn \ref{eq:3.7} we call ${\bf H} = {\bf X}({\bf X}^{T} {\bf X})^{-1}{\bf X}^{T}$
        the `hat' matrix b/c it puts a `hat' on ${\bf y}$. Aka the `projection matrix'
+        #. QUESTION : Shouldn't eqn \ref{eq:3.7} have ${\bf X}^{T}$. See text below
+           eqn 2.6?
     #) Figure 3.2     
         #. Geometrical representation of least squares estimate
         #. Denote column vectors ${\bf X}$ as ${\bf x}_{0}, {\bf x}_{1}, \ldots, {\bf x}_{p}$
@@ -128,7 +130,43 @@ Jargon
     #) Rank deficiencies also occur in signal / image processing where the number of inputs $p$
        can exceed the number of training cases $N$
         #. Use regulation or filtering
-    #) 
+#. Let's make some assumptions about the training data (previously we did not)
+    a) Consider (assume?)
+        #. $y_{i}$ are uncorrelated and has constant variance $\sigma^{2}$
+            * QUESTION : Confusing, b/c they would be correlated if $x_{i}$ follow some 
+                         underlying function. Maybe he means the act of measuring $y_{1}$
+                         has no effect on $y_{2}$
+        #. $x_{i}$ are fixed (i.e. non-random)
+    #) Variance-covariance mastrix of least squres params $(\beta)$ is derived from
+       eqn \ref{3.6}.
+       Starting with eqn \ref{3.6}.
+        $$
+          \begin{aligned}
+            \hat{\beta} = ({\bf X}^{T} {\bf X})^{-1}{\bf X}^{T}{\bf y}
+          \end{aligned}
+        $$
+       We know that generally the equation for variance (single variate) is
+        $$
+          \begin{aligned}
+            \text{Var}(X) & = \text{E}[(X - \mu)]^{2} \\
+                & = \frac{1}{N - 1} \sum_{i=0}^{N} [(X_{i} - \mu)]^{2} \\
+          \end{aligned}
+        $$
+       However we don't have a univarite ${\bf X}$. Consider that we are trying to
+       find the variance in the predicted $\beta$. Also recall that above we said ${\bf X}$
+       is fixed, so only the ${\bf y}$ component of eqn \ref{3.6} can vary. 
+        $$
+          \begin{aligned}
+            \text{Var}(\hat{\beta}) & = \text{E}[(\hat{\beta} - \overline{\beta})]^{2} \\
+            & \vdots \\
+            & \text{and by some not-so-easy magic}    \\
+            & \vdots \\
+            \text{Var}(\hat{\beta}) & = ({\bf X}^{T}{\bf X}
+          \end{aligned}
+        $$
+       
+        #. QUESTION : Is my derivation correct? What is exactly $\overline{\beta}$. Is it 
+           $\text{mean}(\hat{\beta})$ or is it $\text{mean}(\hat{\beta_{i}})$ ?
 
 
 3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors

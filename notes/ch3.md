@@ -74,6 +74,8 @@ Jargon
             * even if $x_{i}$'s aren't randomly draw, it holds if $y_{i}$'s are 
               conditionally independent given inputs $x_{i}$
             * QUESTION : What does this EXACTY mean? 
+            * ANSWER   : $y_{1}$ doesn't depend on $y_{2}$, but they CAN be dependent on 
+                         $x_{1}$ even if $x_{i}$ follows some function. This makes sense
         #. Fig. 3.1 - Visualize as a hyperplane in $p + 1$ dimensional space where the $+1$
            is the $y$ dependent variable.
             * Makes no comment about validity of fit
@@ -111,9 +113,12 @@ Jargon
           \end{aligned}
         $$                                                                      {#eq:3.7}
        From eqn \ref{eq:3.7} we call ${\bf H} = {\bf X}({\bf X}^{T} {\bf X})^{-1}{\bf X}^{T}$
-       the `hat' matrix b/c it puts a `hat' on ${\bf y}$. Aka the `projection matrix'
+       the 'hat' matrix b/c it puts a 'hat' on ${\bf y}$. Aka the `projection matrix'
         #. QUESTION : Shouldn't eqn \ref{eq:3.7} have ${\bf X}^{T}$. See text below
            eqn 2.6?
+        #. ANSWER : He doesn't know why. Maybe switched from column / row vector. Maybe
+                    it is b/c in eqn \ref{eq:3.7} it is a matrix instead of a vector.
+                    Suboptimal notation.
     #) Figure 3.2     
         #. Geometrical representation of least squares estimate
         #. Denote column vectors ${\bf X}$ as ${\bf x}_{0}, {\bf x}_{1}, \ldots, {\bf x}_{p}$
@@ -121,6 +126,13 @@ Jargon
     #) Minimize $\text{RSS}(\beta)$ by choosing $\hat{\beta}$ so that residual vector 
        ${\bf y} - {\bf \hat{y}}$ is \emph{orthogonal} to this subspace
         #. QUESTION : Explain this, I don't have intuition on why it is 'orthoganol'
+        #. ANSWER   : B/c $\hat{y}$ is in the basis set of $x_{i}$. When you multiply
+                      a matrix by a vector, the resultant vector has to be in the space
+                      from $x_{i}$ with $\beta_{i}$ being the coefficients of the basis set
+                      Truth ($y$) is NOT going to exactly be in the column space.
+
+                      The reason it is \emph{orthogonal} is b/c projection is the CLOSEST point 
+                      to the space (recall we took the minimum).
     #) If not all columns in ${\bf X}$ are linearly independent, it is not full rank
         #. E.g. ${\bf x_{2}} = 3 {\bf x_{3}}$
         #. Then ${\bf X}^{T}{\bf X}$ is singular
@@ -136,10 +148,11 @@ Jargon
             * QUESTION : Confusing, b/c they would be correlated if $x_{i}$ follow some 
                          underlying function. Maybe he means the act of measuring $y_{1}$
                          has no effect on $y_{2}$
+            * ANSWER : Already answered near eqn \ref{eq:3.2}
         #. $x_{i}$ are fixed (i.e. non-random)
     #) Variance-covariance mastrix of least squres params $(\beta)$ is derived from
-       eqn \ref{3.6}.
-       Starting with eqn \ref{3.6}.
+       eqn \ref{eq:3.6}.
+       Starting with eqn \ref{eq:3.6}.
         $$
           \begin{aligned}
             \hat{\beta} = ({\bf X}^{T} {\bf X})^{-1}{\bf X}^{T}{\bf y}
@@ -154,10 +167,10 @@ Jargon
         $$
        However we don't have a univarite ${\bf X}$. Consider that we are trying to
        find the variance in the predicted $\beta$. Also recall that above we said ${\bf X}$
-       is fixed, so only the ${\bf y}$ component of eqn \ref{3.6} can vary. 
+       is fixed, so only the ${\bf y}$ component of eqn \ref{eq:3.6} can vary. 
         $$
           \begin{aligned}
-            \text{Var}(\hat{\beta}) & = \text{E}[(\hat{\beta} - \overline{\beta})]^{2} \\
+            \text{Var}(\hat{\beta}) & = \text{E}[(\hat{\beta} - \overline{\hat{\beta}}^{2})] \\
             & \vdots \\
             & \text{and by some not-so-easy magic}    \\
             & \vdots \\
@@ -165,8 +178,9 @@ Jargon
           \end{aligned}
         $$
        
-        #. QUESTION : Is my derivation correct? What is exactly $\overline{\beta}$. Is it 
-           $\text{mean}(\hat{\beta})$ or is it $\text{mean}(\hat{\beta_{i}})$ ?
+        #. QUESTION : Is my derivation correct? What is exactly $\overline{\hat{\beta}}$. Is it 
+                      $\text{mean}(\hat{\beta})$ or is it $\text{mean}(\hat{\beta_{i}})$ ?
+        #. ANSWER   : $\text{E}(\hat{\beta})$ is a vector. Look at his derivation
 
 
 3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors

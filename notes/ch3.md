@@ -290,6 +290,19 @@ Jargon
         $$                                                                      {#eq:3.15}
         #. QUESTION : Typo for $\chi$ in eqn \ref{eq:3.15}? Explain?
 #. 3.2.1 - Example : Prostate Cancer
+    a) Data - Stamey et al. 1989
+        #. Variables 
+            * log cancer volume (lcavol)
+            * log prostate weight (lweight)
+            * age
+            * log of benign protatic hyperplasia (lbph)
+            * seminal vesicle invasion (svi)
+            * log of capsular penetration (lcp)
+            * Gleason score (gleason) 
+            * percent of Gleason scores 4 or 5 (pgg45)
+        #. Fig. 1.1 on p3 illustrates the data
+    #) Let's implement this in Python!
+
 
 
 3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors

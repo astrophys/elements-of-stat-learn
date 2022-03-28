@@ -285,10 +285,11 @@ Jargon
     #) CI for entire vector $\beta$
         $$
           \begin{aligned}
-            C_{\beta} = \{\beta|(\hat{\beta}-\beta)^{T}{\bf X}^{T}{\bf X}(\hat{\beta} - \beta) \leq \hat{\sigma}^{2} \chi_{p+1}^{2(1-\alpha}\}
+            C_{\beta} = \{\beta|(\hat{\beta}-\beta)^{T}{\bf X}^{T}{\bf X}(\hat{\beta} - \beta) \leq \hat{\sigma}^{2} \chi_{p+1}^{2(1-\alpha)}\}
           \end{aligned}
         $$                                                                      {#eq:3.15}
-        #. QUESTION : Typo for $\chi$ in eqn \ref{eq:3.15}?
+        #. QUESTION : Typo for $\chi$ in eqn \ref{eq:3.15}? Explain?
+#. 3.2.1 - Example : Prostate Cancer
 
 
 3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors

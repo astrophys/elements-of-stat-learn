@@ -208,6 +208,7 @@ Jargon
            where $\epsilon \sim N(0, \sigma^{2})$ (adds variance, doesn't shift mean
            on average)
             * QUESTION : Shouldn't eqn \ref{eq:3.9} have $\epsilon_{j}$?
+            * ANSWER   : He thinks he wasn't careful with is paranthesis
     #) Starting with eqn \ref{eq:3.9}
         $$
           \begin{aligned}
@@ -226,6 +227,7 @@ Jargon
           \end{aligned}
         $$                                                                      {#eq:3.10}
         #. QUESTION : Resolve missing term above?
+        #. ANSWER   : Go back to his derivation previously of 
     #) Chi-squared distribution 
         $$
           \begin{aligned}
@@ -253,7 +255,7 @@ Jargon
         #. Enter the $F$ statistic
         $$
           \begin{aligned}
-            F & = \frac{(\text{RSS}_{0} - \text{RSS}_{1})/(p_{1} - p_{0}}{\text{RSS}_{1}/(N-p_{1}-1} \\
+            F & = \frac{(\text{RSS}_{0} - \text{RSS}_{1})/(p_{1} - p_{0})}{\text{RSS}_{1}/(N-p_{1}-1}) \\
           \end{aligned}
         $$                                                                      {#eq:3.13}
            where 
@@ -282,6 +284,7 @@ Jargon
         #. Typically reported as $\hat{\beta} \pm 2 \cdot \text{se}(\hat{\beta})$
             * Approx. a 95% confidence interval
             * QUESTION : What is 'se'?
+            * ANSWER   : 'standard error'
     #) CI for entire vector $\beta$
         $$
           \begin{aligned}
@@ -289,6 +292,7 @@ Jargon
           \end{aligned}
         $$                                                                      {#eq:3.15}
         #. QUESTION : Typo for $\chi$ in eqn \ref{eq:3.15}? Explain?
+        #. ANSWER   : Nope $l = p+1$
 #. 3.2.1 - Example : Prostate Cancer
     a) Data - Stamey et al. 1989
         #. Variables 
@@ -302,7 +306,7 @@ Jargon
             * percent of Gleason scores 4 or 5 (pgg45)
         #. Fig. 1.1 on p3 illustrates the data
     #) Let's implement this in Python!
-
+    #) LEFT OFF HERE
 
 
 3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors

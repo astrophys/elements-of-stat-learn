@@ -41,36 +41,63 @@ def main():
     classification = pd.read_table("data/mixture_simulation/y.txt", sep=" ",
                                     header=0, names=['classification'])
     rawDF = pd.read_table("data/prostate_cancer/data.txt", sep="\t", header=0)
-    newDF = pd.DataFrame(columns = rawDF.columns)
+    skipColL= ["pgg45", "lpsa", "gleason", "train"]
+    keepColL= [col for col in rawDF.columns if col not in skipColL]
+    newDF   = pd.DataFrame(columns = keepColL)       # Empty DF, standardized trainDF here
     trainDF = rawDF[rawDF["train"] == "T"]
     testDF  = rawDF[rawDF["train"] == "F"]
 
 
     # Fit linear model : y=lpsa. x=all other vars
-    print("{:<10} : {:<10} {:<10}".format("col", "mean", "stdev"))
-    for col in newDF.columns:
-        # Center to zero, scale by stdev to make unit var
+    for col1 in newDF.columns:
         # Skip categorical vars
         #   --> svi
         #   --> gleason
-        if(col == "svi" or col == "gleason" or col == "train"):
+        if(col1 in skipColL):
             continue
-        #newDF[col] = (df[col] - np.mean(df[col]))/np.std(df[col])
-        newDF[col] = trainDF[col]/np.std(trainDF[col])
-        print("{:<10} : {:<10.3f} {:<10.3f}".format(col, np.mean(trainDF[col]), np.std(trainDF[col])))
+        else: 
+            newDF[col1] = trainDF[col1]
+
 
     # Compute covariance matrix
-    covM = np.zeros([10,10])            # Yuck - hard coded
+    corrM = np.zeros([newDF.shape[1], newDF.shape[1]])            # Yuck - hard coded
     i = 0
     j = 0
+    colL = []
     for col1 in newDF.columns:
+        colL.append(col1)
         mu1 = np.mean(newDF[col1])
         j = 0
         for col2 in newDF.columns:
             mu2 = np.mean(newDF[col2])
-            covM[i,j] = (np.dot((newDF[col1] - mu1),(newDF[col2] - mu2))) / (newDF.shape[0])
+            # https://en.wikipedia.org/wiki/Correlation
+            #. The newDF.shape comes from expectation value of the numerator
+            corrM[i,j] = (np.dot((newDF[col1] - mu1),(newDF[col2] - mu2))) / (np.std(newDF[col1]) * np.std(newDF[col2]) * newDF.shape[0])
             j = j + 1
         i = i + 1
+
+
+    ### Print out Table 3.1 ###
+    # print header
+    sys.stdout.write("{:<8}".format(" "))
+    for c in colL :
+        if(c in skipColL):
+            continue
+        else:
+            sys.stdout.write("{:<8}".format(c))
+    print("")
+    for i in range(corrM.shape[0]):
+        sys.stdout.write("{:<8}".format(colL[i]))
+        for j in range(corrM.shape[1]):
+            if(j < i):
+                sys.stdout.write("{:<8.3f}".format(corrM[i,j]))
+        print("")
+
+    #
+    # Compute correllations more obviously via 
+    #       np.dot(trainDF["lcavol"] - np.mean(trainDF["lcavol"]), trainDF["lweight"] - np.mean(trainDF["lweight"])) / (trainDF.shape[0] * np.std(trainDF["lcavol"]) * np.std(trainDF["lweight"]))
+    #
+    #
 
 
     print("Run Time : {:.4f} h".format((time.time() - startTime)/3600.0))

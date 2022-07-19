@@ -14,7 +14,7 @@ from error import exit_w_error
 def linear_regression(X = None, Y = None, XYInteract = False, Method = None):
     """
     ARGS:
-        X          = data      (nSamples x nMeasurements)
+        X          = data      (nMeasurements x nVariable)
         Y          = condition (variable want to predict)
         XYInteract = there is x-y interaction
         Method     = 'Normal' : beta = (X^T * X)^{-1} * X^T *  y
@@ -128,7 +128,7 @@ def linear_regression(X = None, Y = None, XYInteract = False, Method = None):
     """
     # Add intercept by adding a column value == 1 to x, see p45 of Hastie
     # This is necessary to get the b intercept
-    length = X.shape
+    length = X.shape[0]         # Add bias/intercept, cols = vars, rows = meas
     ones = np.ones(length)
 
     if XYInteract == True:

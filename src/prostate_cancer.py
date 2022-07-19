@@ -24,6 +24,7 @@ import pandas as pd
 import sys
 import numpy as np
 from error import exit_w_error
+from lin_reg_2 import linear_regression
 
 def main():
     """
@@ -45,9 +46,10 @@ def main():
     keepColL= [col for col in rawDF.columns if col not in skipColL]
     newDF   = pd.DataFrame(columns = keepColL)       # Empty DF, standardized trainDF here
     trainDF = rawDF[rawDF["train"] == "T"]
-    testDF  = rawDF[rawDF["train"] == "F"]
+    #testDF  = rawDF[rawDF["train"] == "F"]
 
 
+    #### Clean this up ###
     # Fit linear model : y=lpsa. x=all other vars
     for col1 in newDF.columns:
         # Skip categorical vars
@@ -92,6 +94,13 @@ def main():
             if(j < i):
                 sys.stdout.write("{:<8.3f}".format(corrM[i,j]))
         print("")
+
+
+    ### Use my linear regression code ###
+    x    = np.asarray(newDF)
+    y    = rawDF[rawDF["train"] == "T"]["lpsa"]
+    beta = linear_regression(X=x, Y=y, XYInteract=False, Method="QR")
+
 
     #
     # Compute correllations more obviously via 

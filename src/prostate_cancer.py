@@ -42,12 +42,11 @@ def main():
     classification = pd.read_table("data/mixture_simulation/y.txt", sep=" ",
                                     header=0, names=['classification'])
     rawDF = pd.read_table("data/prostate_cancer/data.txt", sep="\t", header=0)
-    skipColL= ["pgg45", "lpsa", "gleason", "train"]
+    #skipColL= ["pgg45", "lpsa", "gleason", "train"]
+    skipColL= ["lpsa", "train"]
     keepColL= [col for col in rawDF.columns if col not in skipColL]
     newDF   = pd.DataFrame(columns = keepColL)       # Empty DF, standardized trainDF here
     trainDF = rawDF[rawDF["train"] == "T"]
-    #testDF  = rawDF[rawDF["train"] == "F"]
-
 
     #### Clean this up ###
     # Fit linear model : y=lpsa. x=all other vars
@@ -59,7 +58,6 @@ def main():
             continue
         else: 
             newDF[col1] = trainDF[col1]
-
 
     # Compute covariance matrix
     corrM = np.zeros([newDF.shape[1], newDF.shape[1]])            # Yuck - hard coded
@@ -73,15 +71,15 @@ def main():
         for col2 in newDF.columns:
             mu2 = np.mean(newDF[col2])
             # https://en.wikipedia.org/wiki/Correlation
-            #. The newDF.shape comes from expectation value of the numerator
+            #   The newDF.shape comes from expectation value of the numerator
             corrM[i,j] = (np.dot((newDF[col1] - mu1),(newDF[col2] - mu2))) / (np.std(newDF[col1]) * np.std(newDF[col2]) * newDF.shape[0])
             j = j + 1
         i = i + 1
 
 
     ### Print out Table 3.1 ###
-    # print header
-    sys.stdout.write("{:<8}".format(" "))
+    print("\n\nREPRODUCING Table 3.1 : ")
+    sys.stdout.write("\t{:<8}".format(" "))
     for c in colL :
         if(c in skipColL):
             continue
@@ -89,27 +87,39 @@ def main():
             sys.stdout.write("{:<8}".format(c))
     print("")
     for i in range(corrM.shape[0]):
-        sys.stdout.write("{:<8}".format(colL[i]))
+        sys.stdout.write("\t{:<8}".format(colL[i]))
         for j in range(corrM.shape[1]):
             if(j < i):
                 sys.stdout.write("{:<8.3f}".format(corrM[i,j]))
         print("")
 
 
-    ### Use my linear regression code ###
+    ### Compute Z scores in Table 3.2 ###
+    print("\n\nREPRODUCING Table 3.2 : ")
     x    = np.asarray(newDF)
-    y    = rawDF[rawDF["train"] == "T"]["lpsa"]
+    # Standardize, center and make stdev == 1
+    for i in range(x.shape[1]):
+        x[:,i] = (x[:,i] - np.mean(x[:,i]))/ np.std(x[:,i])
+    y    = rawDF[rawDF["train"] == "T"]["lpsa"]         # Get training data
     beta = linear_regression(X=x, Y=y, XYInteract=False, Method="QR")
+    yhat = np.dot(x,beta[1:])+ beta[0]
+    xTxInv  = np.linalg.inv(np.dot(x.T,x))
+    s = np.sqrt(1/(y.shape[0]-x.shape[1]-1) * np.sum((y-yhat)**2))
 
+    colName = newDF.columns                                             # 
+    for i in range(beta.shape[0]):
+        if(i==0):
+            z = beta[i] / s
+            print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format("Intercept", beta[i], 0, z))
+        else:
+            z = beta[i] / (s * np.sqrt(xTxInv[i-1,i-1]) )      # stdev == 1 anyways
+            print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i-1], beta[i], xTxInv[i-1,i-1]/np.sqrt(x.shape[0]), z))
+    print("\n\nQUESTIONS on Table 3.2 : "
+          "\t  1. How Do I compute Z-score for the Intercept? my value is wrong, should"
+          "be 27.60.")
+    print("\t  2. How is the Standard Error computed")
 
-    #
-    # Compute correllations more obviously via 
-    #       np.dot(trainDF["lcavol"] - np.mean(trainDF["lcavol"]), trainDF["lweight"] - np.mean(trainDF["lweight"])) / (trainDF.shape[0] * np.std(trainDF["lcavol"]) * np.std(trainDF["lweight"]))
-    #
-    #
-
-
-    print("Run Time : {:.4f} h".format((time.time() - startTime)/3600.0))
+    print("\nRun Time : {:.4f} h".format((time.time() - startTime)/3600.0))
     return 0
 
 if __name__ == "__main__":

@@ -103,21 +103,22 @@ def main():
     y    = rawDF[rawDF["train"] == "T"]["lpsa"]         # Get training data
     beta = linear_regression(X=x, Y=y, XYInteract=False, Method="QR")
     yhat = np.dot(x,beta[1:])+ beta[0]
+    # Compute variables for eqn 3.12 below
     xTxInv  = np.linalg.inv(np.dot(x.T,x))
-    s = np.sqrt(1/(y.shape[0]-x.shape[1]-1) * np.sum((y-yhat)**2))
+    s = np.sqrt(1/(y.shape[0]-x.shape[1]-1) * np.sum((y-yhat)**2))      # eqn 3.8
 
     colName = newDF.columns                                             # 
     for i in range(beta.shape[0]):
         if(i==0):
-            z = beta[i] / s
+            z = beta[i] / s                                             # eqn 3.12
             print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format("Intercept", beta[i], 0, z))
         else:
             z = beta[i] / (s * np.sqrt(xTxInv[i-1,i-1]) )      # stdev == 1 anyways
             print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i-1], beta[i], xTxInv[i-1,i-1]/np.sqrt(x.shape[0]), z))
-    print("\n\nQUESTIONS on Table 3.2 : "
-          "\t  1. How Do I compute Z-score for the Intercept? my value is wrong, should"
-          "be 27.60.")
-    print("\t  2. How is the Standard Error computed")
+    print("\n\nQUESTIONS on Table 3.2 : \n"
+          "\t  1. How Do I compute Z-score for the Intercept? my value is wrong,\n"
+          "\t     should be 27.60.")
+    print("\t  2. How is the Standard Error computed?")
 
     print("\nRun Time : {:.4f} h".format((time.time() - startTime)/3600.0))
     return 0

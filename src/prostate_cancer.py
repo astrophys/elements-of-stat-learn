@@ -100,23 +100,22 @@ def main():
     # Standardize, center and make stdev == 1
     for i in range(x.shape[1]):
         x[:,i] = (x[:,i] - np.mean(x[:,i]))/ np.std(x[:,i])
+    # Need to add ones for intercept AFTER standardizing data, else nan's occur
+    ones = np.ones(x.shape[0])
+    x = np.column_stack((ones,x))
     y    = rawDF[rawDF["train"] == "T"]["lpsa"]         # Get training data
-    beta = linear_regression(X=x, Y=y, XYInteract=False, Method="QR")
-    yhat = np.dot(x,beta[1:])+ beta[0]
+    beta = linear_regression(X=x, Y=y, XYInteract=False, OnesIncl=True, Method="QR")
+    yhat = np.dot(x,beta)
     # Compute variables for eqn 3.12 below
     xTxInv  = np.linalg.inv(np.dot(x.T,x))
     s = np.sqrt(1/(y.shape[0]-x.shape[1]-1) * np.sum((y-yhat)**2))      # eqn 3.8
 
     colName = newDF.columns                                             # 
     for i in range(beta.shape[0]):
-        if(i==0):
-            z = beta[i] / s                                             # eqn 3.12
-            print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format("Intercept", beta[i], 0, z))
-        else:
-            z = beta[i] / (s * np.sqrt(xTxInv[i-1,i-1]) )     
-            # In Table 3.2 title, standard error is denominator of 'z' in eqn 3.12
-            print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i-1],
-                  beta[i], s * np.sqrt(xTxInv[i-1,i-1]), z))
+        z = beta[i] / (s * np.sqrt(xTxInv[i,i]) )     
+        # In Table 3.2 title, standard error is denominator of 'z' in eqn 3.12
+        print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i-1],
+              beta[i], s * np.sqrt(xTxInv[i,i]), z))
     print("\n\nQUESTIONS on Table 3.2 : \n"
           "\t  1. How Do I compute Z-score for the Intercept? my value is wrong,\n"
           "\t     should be 27.60. It's off by factor of ~8")

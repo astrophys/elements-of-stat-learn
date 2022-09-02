@@ -113,12 +113,25 @@ def main():
             z = beta[i] / s                                             # eqn 3.12
             print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format("Intercept", beta[i], 0, z))
         else:
-            z = beta[i] / (s * np.sqrt(xTxInv[i-1,i-1]) )      # stdev == 1 anyways
-            print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i-1], beta[i], xTxInv[i-1,i-1]/np.sqrt(x.shape[0]), z))
+            z = beta[i] / (s * np.sqrt(xTxInv[i-1,i-1]) )     
+            # In Table 3.2 title, standard error is denominator of 'z' in eqn 3.12
+            print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i-1],
+                  beta[i], s * np.sqrt(xTxInv[i-1,i-1]), z))
     print("\n\nQUESTIONS on Table 3.2 : \n"
           "\t  1. How Do I compute Z-score for the Intercept? my value is wrong,\n"
-          "\t     should be 27.60.")
-    print("\t  2. How is the Standard Error computed?")
+          "\t     should be 27.60. It's off by factor of ~8")
+
+
+    ### Computing the F-statistic if we drop age, lcp, gleason and pgg45
+    print("\n\nComputing F score in eqn 3.16 assuming age, lcp, gleason and \n"
+              "pgg45 are dropped\n")
+    # Using eqn 3.13
+    ones = np.ones(x.shape[0])          # Modified like in lin_reg_2.py
+    X    = np.column_stack((ones,x))    # Add column of ones
+    res  = y - np.dot(X,beta)
+    rss1 = np.dot(res.T, res)           # bigger model
+
+    
 
     print("\nRun Time : {:.4f} h".format((time.time() - startTime)/3600.0))
     return 0

@@ -11,12 +11,15 @@
 import numpy as np
 from error import exit_w_error
 
-def linear_regression(X = None, Y = None, XYInteract = False, Method = None):
+def linear_regression(X = None, Y = None, XYInteract = False, OnesIncl = False,
+                      Method = None
+):
     """
     ARGS:
         X          = data      (nMeasurements x nVariable)
         Y          = condition (variable want to predict)
         XYInteract = there is x-y interaction
+        OnesIncl   = boolean, : True if ones vector already appended to X
         Method     = 'Normal' : beta = (X^T * X)^{-1} * X^T *  y
                                 beta = np.linalg.inv(np.dot(X.T,X)) X.T y # Eqn 2.6 in ESL
                      'QR'     : beta = 
@@ -126,17 +129,16 @@ def linear_regression(X = None, Y = None, XYInteract = False, Method = None):
         4. Debug Method == QR
            --> Check that xyinteract works here
     """
-    # Add intercept by adding a column value == 1 to x, see p45 of Hastie
-    # This is necessary to get the b intercept
-    length = X.shape[0]         # Add bias/intercept, cols = vars, rows = meas
-    ones = np.ones(length)
-
-    if XYInteract == True:
-        # Fit with interacting term?
-        X = np.column_stack((ones,X,X*Y))
-    else:
-        # Fit with no x:y interactions
+    # If ones already included (for intercept) in X, skip this step
+    if(OnesIncl == False):
+        length = X.shape[0]         # Add bias/intercept, cols = vars, rows = meas
+        ones = np.ones(length)
+        # Add intercept by adding a column value == 1 to x, see p45 of Hastie
         X = np.column_stack((ones,X))
+
+    if(XYInteract == True):
+        # Fit with x:y interacting term?
+        X = np.column_stack((X,X*Y))
 
     if(Method == "Normal"):
         X2 = np.dot(X.T,X)
@@ -146,7 +148,7 @@ def linear_regression(X = None, Y = None, XYInteract = False, Method = None):
         # compute residuals
         residual  = (Y - np.dot(X,beta))
         residual2 = np.dot(residual.T, residual)
-        print("residual squared= {}".format(residual2))
+        #print("residual squared= {}".format(residual2))
         
         # Not sure how this gives the std. err. (see summary(lm()))
         # check the diagonals

@@ -306,7 +306,28 @@ Jargon
             * percent of Gleason scores 4 or 5 (pgg45)
         #. Fig. 1.1 on p3 illustrates the data
     #) Let's implement this in Python!
-    #) LEFT OFF HERE
+        #. Procedure 
+            * Standardize data 
+                + Center on mean
+                + Make unit variance
+            * Randomly split into Training set (67) and Test set (30)
+            * Apply least squares to estimate the coefficients
+            * Compute Z-scores \ref{eq:3.12}
+        #. See src/prostate_cancer.py
+            * I didn't get the correct value for the Intercept...
+    #) Z-score
+        #. Measure's the effect of dropping variable from model
+        #. Absolute value $>2$ is approximately significant at 5% level.
+        #. lcavol, lweight and svi are significant (Table 3.2)
+        #. Can test for exclusion of a number of terms at once using
+           $F$-statistic (\ref{eq:3.13})
+    #) Dropping age, lcp, gleason and pgg45
+        $$
+          \begin{aligned}
+            F & = \frac{(\text{RSS}_{0} - \text{RSS}_{1})/(p_{1} - p_{0})}{\text{RSS}_{1}/(N-p_{1}-1}) \\
+          \end{aligned}
+        $$                                                             {#eq:3.16}
+        
 
 
 3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors

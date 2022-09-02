@@ -110,25 +110,20 @@ def main():
     xTxInv  = np.linalg.inv(np.dot(x.T,x))
     s = np.sqrt(1/(y.shape[0]-x.shape[1]-1) * np.sum((y-yhat)**2))      # eqn 3.8
 
-    colName = newDF.columns                                             # 
+    colName = list(newDF.columns)
+    colName.insert(0, "Intercept")
     for i in range(beta.shape[0]):
-        z = beta[i] / (s * np.sqrt(xTxInv[i,i]) )     
+        z = beta[i] / (s * np.sqrt(xTxInv[i,i]))     
         # In Table 3.2 title, standard error is denominator of 'z' in eqn 3.12
-        print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i-1],
+        print("\t{:<10} {:<10.2f} {:<10.2f} {:<10.2f}".format(colName[i],
               beta[i], s * np.sqrt(xTxInv[i,i]), z))
-    print("\n\nQUESTIONS on Table 3.2 : \n"
-          "\t  1. How Do I compute Z-score for the Intercept? my value is wrong,\n"
-          "\t     should be 27.60. It's off by factor of ~8")
-
 
     ### Computing the F-statistic if we drop age, lcp, gleason and pgg45
     print("\n\nComputing F score in eqn 3.16 assuming age, lcp, gleason and \n"
               "pgg45 are dropped\n")
     # Using eqn 3.13
-    ones = np.ones(x.shape[0])          # Modified like in lin_reg_2.py
-    X    = np.column_stack((ones,x))    # Add column of ones
-    res  = y - np.dot(X,beta)
-    rss1 = np.dot(res.T, res)           # bigger model
+    #res  = y - np.dot(X,beta)
+    #rss1 = np.dot(res.T, res)           # bigger model
 
     
 

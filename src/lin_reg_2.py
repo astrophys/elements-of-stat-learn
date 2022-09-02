@@ -6,8 +6,8 @@
 #
 #   Conclusion : 
 #       I have a pretty decent understanding of linear regression
-#
-#
+"""Module that provides useful functions for the computation of linear regression models
+"""
 import numpy as np
 from error import exit_w_error
 
@@ -165,3 +165,12 @@ def linear_regression(X = None, Y = None, XYInteract = False, OnesIncl = False,
 
     return beta         # For 1 input var (e.g. x is 1 dimensional)
 
+
+def rss(X = None, Y = None, Beta = None):
+    """
+    ARGS:
+        X          = data      (nMeasurements x nVariable)
+        Y          = condition (variable want to predict)
+    RETURN:
+    DESCRIPTION:
+    """

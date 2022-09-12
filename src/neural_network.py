@@ -83,6 +83,47 @@ def read_zipcode_data(Path=None):
     return(imageL)
 
 
+def sigmoid(Z):
+    """
+    Compute the sigmoid function on Z
+
+    Args:
+        Z : float 
+
+    Returns:
+        float, value of sigmoid(Z)
+
+    Raises: 
+    """
+    return(1/(1+np.exp(-Z)))
+
+
+def forward_propagation(ActV = None, WeightML = None, BiasVL = None):
+    """
+    This does forward propagation 
+
+    Args:
+        ActV    : numpy float vector, Initial activation values, 
+        WeightML: list of weight matrices, ORDER MATTERS.
+        BiasVL  : list of bias vectors, ORDER MATTERS.
+
+    Returns:
+        Activation values of final nodes
+
+    Raises: 
+    """
+    if(len(WeightML) != len(BiasVL)):
+        raise ValueError("ERROR!!! Number of weight matrices to equal number of bias"
+                         "vectors")
+    for i in range(len(WeightML)):
+        if(i==0):
+            tmpV = np.dot(ActV, WeightML[i]) + BiasVL[i]
+        else:
+            tmpV = np.dot(tmpV, WeightML[i]) + BiasVL[i]
+        tmpV = sigmoid(tmpV)
+    return(tmpV)
+
+
 def main():
     """
     Prints to stdout whether two files are identical within the tolerance
@@ -95,6 +136,19 @@ def main():
     """
     trainPath = "data/zipcode/zip.train"
     imageL = read_zipcode_data(trainPath)
+    miniL  = imageL[0:200]       # Mini-batch, not so random
+    # Initialize weight vectors, with one hidden layer
+    w0M = np.random.random([256,16])
+    w1M = np.random.random([16,10])
+    # Initialize bias vectors, with one hidden layer
+    b0V = np.random.random([16])
+    b1V = np.random.random([10])
+    # Activations
+    a = imageL[0].mat.flatten()
+    a = forward_propagation(ActV=a, WeightML=[w0M,w1M], BiasVL=[b0V,b1V])
+    print(a)
+    
+
     sys.exit(0)
 
 if __name__ == "__main__":

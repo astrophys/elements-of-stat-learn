@@ -56,15 +56,20 @@ def plot_data():
     """
 
 
-def kmeans():
+def kmeans(DataM=None, K=None):
     """
+    Compute kmeans clustering
 
     Args:
+        DataM = (numpy matrix)
 
     Returns:
 
     Raises:
     """
+    # Start with k clusters
+    # Randomely assign location for each mean
+    # Assign each point to closest mean
 
 
 def main():
@@ -90,6 +95,7 @@ def main():
         plt.scatter(tmp[:,0], tmp[:,1], c=colorL[i], marker=markerL[i])
     plt.show()
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

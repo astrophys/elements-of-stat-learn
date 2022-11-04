@@ -327,7 +327,99 @@ Jargon
             F & = \frac{(\text{RSS}_{0} - \text{RSS}_{1})/(p_{1} - p_{0})}{\text{RSS}_{1}/(N-p_{1}-1}) \\
           \end{aligned}
         $$                                                             {#eq:3.16}
-        
+#. 3.2.2 - Gauss-Markov Theorem
+    a) Famouse results : least squares estimates $\beta$ have smallest varience among all 
+                         \emph{linear} unbiased estimates.
+        #. Leads us to ridge regression later
+        #. Consider any linear combination of params $\theta = a^{T}\beta$
+            * $f(x_{0}) = x_{0}^{T}\beta$, a linear function is of this form
+        #. Now the the \emph{prediction} of $\theta$ is $\hat{\theta}$
+        $$
+          \begin{aligned}
+            \hat{\theta} = a^{T} \hat{\beta} = a^{T} ({\bf X}^{T} {\bf X})^{-1} {\bf X}^{T} {\bf y}
+          \end{aligned}
+        $$                                                             {#eq:3.17}
+            * If ${\bf X}$ is fixed, $\hat{\theta}$ is a linear function
+              (${\bf c}_{0}^{T}{\bf y}$), then $a^{T} \hat{\beta}$ is unbiased.
+        $$
+          \begin{aligned}
+            \text{E}(a^{T} \hat{\beta})  = \\
+                & \text{Subsitute $\hat{\beta} = ({\bf X}^{T} {\bf X})^{-1}{\bf X}^{T}{\bf y}$} \\
+                & = \text{E}(a^{T}({\bf X}^{T} {\bf X})^{-1} {\bf X}^{T} {\bf y}) \\
+                &   \text{$a^{T}$ and ${\bf X}$ is a constant, so pull it all out of expectation value}  \\
+                & = a^{T}({\bf X}^{T} {\bf X})^{-1} {\bf X}^{T} \text{E}({\bf y})   \\
+                &   \text{Expected value of ${\bf y}$ is ${\bf X}\beta$}   \\
+                & = a^{T}\cancelto{\mathbb{I}}{({\bf X}^{T} {\bf X})^{-1} {\bf X}^{T} {\bf X}} {\beta})    \\
+                &   \text{I'm confused here about exactly how and where ${\bf X} {\beta}$ come from }\\
+                & = a^{T}\beta
+            \text{E}(\theta) & = \theta
+                &   \text{Thus E$(\theta) = \theta$}\\
+          \end{aligned}
+        $$                                                             {#eq:3.18}
+         Eqn \ref{eq:3.18} proves that it is unbiased. The key assumption is that the linear
+         model is correct (this is KEY). Thus the expectation of the prediction should equal
+         the actual values.
+        #. Gauss-Markov theorem states : if we have any other linear estimator
+           $\tilde{\theta} = {\bf c}^{T} {\bf y}$ that is unbiased for $a^{T} \hat{\beta}$,
+           i.e. $\text{E} ({\bf c} {\bf y}) = a^{T} \beta$ then
+        $$
+          \begin{aligned}
+            \text{Var}(a^{T}\hat{\beta}) \le \text{Var}({\bf c}^{T}{\bf y})
+          \end{aligned}
+        $$                                                             {#eq:3.19}
+        #. Consider mean squared error ($\text{MSE}(\hat{\theta})$) for any estimator, where
+           $\theta$ is the truth.
+        $$
+          \begin{aligned}
+            \text{MSE}(\tilde{\theta}) & = \text{E}(\tilde{\theta} - \theta)^{2}            \\ 
+                & = \text{Var}(\tilde{\theta}) + [\text{E}(\tilde{\theta})  - \theta]^{2}
+          \end{aligned}
+        $$                                                             {#eq:3.20}
+           Extending eqn \ref{eq:3.20} to the linear model.
+        $$
+          \begin{aligned}
+            \text{MSE}(\tilde{\theta}) & = \text{Var}(\tilde{\theta}) + [\text{E}(\tilde{\theta})  - \theta]^{2} \\
+                & = \text{Var}(\tilde{\theta}) + [\theta - \theta]^{2}    \\
+                & = \text{Var}(\tilde{\theta}) \\
+          \end{aligned}
+        $$
+           The upshot is that the Gauss-Markov theorem implies that the least
+           squares estimator has the smallest mean squared error of ALL linear estimators
+           with NO BIAS.
+        #. However, there may still be a BIASED estimator with lower MSE...
+            * Trades off some bias for less variance
+            * Best models trade this off. Enter ridge regression and such
+        #. MSE is intimately related to prediction accuracy.  
+        $$
+          \begin{aligned}
+            Y_{0} = f(x_{0}) + \epsilon_{0}
+          \end{aligned}
+        $$                                                             {#eq:3.21}
+           The expected prediction error (see eqn \ref{eq:3.20}) for an estimate
+           $\tilde{f}(x_{0}) = x_{0}^{T} \hat{\beta}
+        $$
+          \begin{aligned}
+            \text{E}(Y_{0} - \tilde{f}(x_{0}))^{2} & = \sigma^{2} + \text{E}(x_{0}^{T}\tilde{\beta} - f(x_{0}))^{2}
+                & = \sigma^{2} + \text{MSE}(\tilde{f}(x_{0}))
+          \end{aligned}
+        $$                                                             {#eq:3.22}
+          where $\sigma^{2}$ is the variance of the new observation $y_{0}$
+
+        #. Q/A : 
+            * Q : Where does the additional ${\bf X}$ come in from the expectation value?
+            * A : ${\bf X}$ is constant and $\text{E}({\bf y}) = {\bf X}\beta$
+            * Q : Is $a^{T}$ just ${\bf X}$?
+            * A : Yes
+            * Q : parameters in $\theta$ don't have to be a linear function, correct?
+            * A : Yes
+            * Q : Is \ref{eq:3.18} unbiased b/c the expectation value did NOT pick up an 
+                          extra term? Is it unbiased b/c (${\bf c}_{0}^{T}{\bf y}$) is linear?
+            * A : Yes
+            * Q : Not sure why the variances aren't just equal?
+            * A : The KEY point is that the estimator $\hat{\theta}$ is the Least 
+                          squares estimate, where $\tilde{\theta}$ can be ANY other estimator.
+            * Q : In eqn \ref{eq:3.22} what is $y_{0}$?  $x_{0}^{T} \hat{\beta}$?
+
 
 
 3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors

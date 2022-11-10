@@ -396,10 +396,10 @@ Jargon
           \end{aligned}
         $$                                                             {#eq:3.21}
            The expected prediction error (see eqn \ref{eq:3.20}) for an estimate
-           $\tilde{f}(x_{0}) = x_{0}^{T} \hat{\beta}
+           $\tilde{f}(x_{0}) = x_{0}^{T} \hat{\beta}$
         $$
           \begin{aligned}
-            \text{E}(Y_{0} - \tilde{f}(x_{0}))^{2} & = \sigma^{2} + \text{E}(x_{0}^{T}\tilde{\beta} - f(x_{0}))^{2}
+            \text{E}(Y_{0} - \tilde{f}(x_{0}))^{2} & = \sigma^{2} + \text{E}(x_{0}^{T}\tilde{\beta} - f(x_{0}))^{2} \\
                 & = \sigma^{2} + \text{MSE}(\tilde{f}(x_{0}))
           \end{aligned}
         $$                                                             {#eq:3.22}
@@ -419,6 +419,110 @@ Jargon
             * A : The KEY point is that the estimator $\hat{\theta}$ is the Least 
                           squares estimate, where $\tilde{\theta}$ can be ANY other estimator.
             * Q : In eqn \ref{eq:3.22} what is $y_{0}$?  $x_{0}^{T} \hat{\beta}$?
+
+
+#. 3.2.3 - Multiple Regression from Simple Univariate Regression
+    a) Multiple Linear Regression Model
+        #. Recall from eqn \ref{eq:3.1} that ${\bf X} = \{X_{1}, X_{2}, \ldots, X_{p}\}$
+        #. Called multiple linear regression model when $p > 1$
+        #. Best understood for \emph{univariate} model, i.e. $p = 1$
+    #) Consider univariate model \emph{without} intercept
+        $$
+          \begin{aligned}
+            Y = X \beta + \epsilon
+          \end{aligned}
+        $$                                                             {#eq:3.23}
+       Rearranging eqn \ref{eq:3.6} for a single $X$, the and $N$ measurements, the 
+       least squares estimate and residuals
+        $$
+          \begin{aligned}
+            \hat{\beta} & = \frac{\sum_{1}^{N} x_{i} y_{i}}{\sum_{1}^{N} x_{i}^{2}}   \\
+            r_{i} & = y_{i} - x_{i} \hat{\beta}
+          \end{aligned}
+        $$                                                             {#eq:3.24}
+       Using vector notation, where ${\bf y} = (y_{1}, \ldots, y_{N})^{T}$ and  
+       ${\bf x} = (x_{1}, \ldots, x_{N})^{T}$
+        $$
+          \begin{aligned}
+            \langle {\bf x}, {\bf y} \rangle & = \sum_{i=1}^{N} x_{i} y_{i}     \\
+                & = {\bf x}^{T} {\bf y}
+          \end{aligned}
+        $$                                                             {#eq:3.25}
+       Rewriting eqn \ref{eq:3.24} in vector notation
+        $$
+          \begin{aligned}
+            \hat{\beta} & = \frac{\langle {\bf x}, {\bf y} \rangle}{\langle {\bf x}, {\bf x} \rangle}\\
+            {\bf r} & = {\bf y} - {\bf x} \hat{\beta}
+          \end{aligned}
+        $$                                                             {#eq:3.26}
+    #) Now consider that that there are multiple variables measured (i.e. $p > 1$) and 
+       that each is independent (i.e. orthoganol). 
+        #. Inputs (columns of matrix ${\bf X}$), ${\bf x}_{1}, \ldots, {\bf x}_{p}$
+        #. i.e. $\langle {\bf x}_{j}, {\bf x}_{k} \rangle = 0$, for all $j \ne k$
+    #) Now since each variable is independent, the multiple least squares estimate for each 
+       variable is simple the univariate estimates
+        $$
+          \begin{aligned}
+            \hat{\beta}_{j} & = \frac{\langle {\bf x}_{j}, {\bf y} \rangle}{\langle {\bf x}_{j}, {\bf x}_{j} \rangle}\\
+          \end{aligned}
+        $$                                                            
+        #. Orthogonal inputs (variables), occur most often with balanced, well-designed
+           experiments
+        #. Never occurs with observational data
+            * Can help situation by orthogonalizing them
+    #) NOW consider that we have an intercept and a single input / variable ${\bf x}$
+        $$
+          \begin{aligned}
+            \hat{\beta}_{1} & = \frac{\langle {\bf x} - \overline{x}{\bf 1}, {\bf y} \rangle}{\langle {\bf x} - \overline{x}{\bf 1}, {\bf x} - \overline{x}{\bf 1} \rangle}\\
+          \end{aligned}
+        $$                                                             {#eq:3.27}
+       where $\overline{x} = \sum_{i} x_{i} / N$ and ${\bf 1} = 1_{1}...1_{N} = {\bf x}_{0}$. 
+    #) You can get eqn \ref{eq:3.27} by doing two applications of regression with
+       eqn \ref{eq:3.26}
+        #. Regress ${\bf x}$ on ${\bf 1}$. Produces residual
+           ${\bf z} = {\bf x} - \overline{x} {\bf 1}$
+            * "Orthogalizes" ${\bf x}$ w/r/t ${\bf 1}$
+        #. Regress ${\bf y}$ on the residual ${\bf z}$ to give the coefficient
+           $\hat{\beta}_{1}$
+            * Simple univariate regression using orthogonal predictors ${\bf 1}$ and
+              ${\bf z}$
+    #) Jargon
+        #. "regress ${\bf b}$ on ${\bf a}$" means a simple univariate regression without 
+           intercept
+            * Coefficient : $\hat{\gamma} =
+              \langle {\bf a}, {\bf b} \rangle / \langle {\bf a}, {\bf a} \rangle$
+            * Residual    : ${\bf b} - \hat{\gamma} {\bf a}$
+        #. "${\bf b}$ is orthogonalized w/r/t ${\bf a}$"
+    #) This recipe can be generalized to $p$ inputs
+    #) Algorithm 3.1 : Regression by Successive Othogonalization
+        #. Step 1 : Initialize ${\bf z}_{0} = {\bf x}_{0} = {\bf 1}$
+        #. Step 2 : For $j = 1, 2, \ldots, p$
+            * Regress $x_{j}$ on ${\bf z}_{0}, {\bf z}_{1}, \ldots, {\bf z}_{j-1}$ to
+              produce coeffs $\hat{\gamma} = \langle {\bf z}_{l}, {\bf x}_{j} \rangle / \langle {\bf z}_{l},{\bf z}_{l} \rangle$
+              where $l = 0, \ldots, j-1$ and the residual vector is 
+              ${\bf z}_{j} = {\bf x}_{j} = \sum_{k=0}^{j-1} \hat{\gamma}_{kj} {\bf z}_{k}$
+        #. Step 3 : Regress ${\bf y}$ on the residual ${\bf z}_{p}$ to give estimate $\hat{\beta}_{p}$
+        $$
+          \begin{aligned}
+            \hat{\beta}_{p} & = \frac{\langle {\bf z}_{p}, {\bf y} \rangle}{\langle {\bf z}_{p}, {\bf z}_{p} \rangle}\\
+          \end{aligned}
+        $$                                                             {#eq:3.28}
+    
+
+    #) Q / A
+        #. Q : Below eqn \ref{eq:3.26}, he uses bold for the measurements ${\bf x}_{1}$.
+               In the current case $x_{1}$ should be a scalar
+        #. Q : The 'intercept' is what he previously called the \emph{bias}, right?
+        #. Q : Eqn \ref{eq:3.27} is called 'centering', I don't see how he pulls 
+               it from the ether? I don't think you get that if you pulled. The 
+               intercept is not the mean.
+        #. Q : Eqn \ref{eq:3.27} smells like the Gram-Schmidt process
+        #. Q : Why are we regressing againts ${\bf 1}$
+        #. Q : Algorithm 3.1 seems a lot like a bootstrapping method
+        #. Q : Why do multiple regression with successive othrogonalization vs 
+               just normal linear regression?
+        #. Q : in eqn \ref{eq:3.28}, $\beta_{p}$ only refers to a single vector, right? 
+              
 
 
 

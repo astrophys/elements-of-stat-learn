@@ -512,16 +512,32 @@ Jargon
     #) Q / A
         #. Q : Below eqn \ref{eq:3.26}, he uses bold for the measurements ${\bf x}_{1}$.
                In the current case $x_{1}$ should be a scalar
+        #. A : No, it is ${\bf x}_{p}$. For variable $p$, there are multiple entries for each
+               measurement of that variable. 
         #. Q : The 'intercept' is what he previously called the \emph{bias}, right?
+        #. A : No...
+            * Ali : Look at p11, between eqn 2.1 and 2.2. $\hat{\beta}_{0}$ is called the 
+                    \emph{bias}
+            * Maybe nomenclature? Maybe it means two things that aren't quite the same thing.
         #. Q : Eqn \ref{eq:3.27} is called 'centering', I don't see how he pulls 
                it from the ether? I don't think you get that if you pulled. The 
                intercept is not the mean.
+        #. A : Maybe you should derive it yourself. "Have faith or just prove it"
         #. Q : Eqn \ref{eq:3.27} smells like the Gram-Schmidt process
-        #. Q : Why are we regressing againts ${\bf 1}$
+        #. A : It is, just he's being awkward.
+        #. Q : Why are we regressing against ${\bf 1}$
+        #. A : He's just picking the ${\bf 1}$ as the starting point of his Gram-Schmidt
+               process. $f(x)=\beta_{0}*{\bf 1} + \sum {\bf x}_{i} \beta_{i}$
         #. Q : Algorithm 3.1 seems a lot like a bootstrapping method
+        #. A : Need previous z's and current x to make the next z. You have two 
+               vectors, the dot products get's the projection.  If you subtract the 
+               projection, you get the normal component
         #. Q : Why do multiple regression with successive othrogonalization vs 
-               just normal linear regression?
+               just normal linear regression? 
+        #. A : If you have orthoganol inputs, your $\beta_{j}$'s are cleaner.
         #. Q : in eqn \ref{eq:3.28}, $\beta_{p}$ only refers to a single vector, right? 
+        #. A : $\hat{\beta}_{p}$ is a scalar. The definition of a an inner product has to 
+               map into a scalar. Inner products are NOT matrix multiplication.
               
 
 

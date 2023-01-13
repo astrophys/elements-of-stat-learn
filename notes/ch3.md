@@ -554,4 +554,5 @@ To Do
 ==========================
 1. Work on derivation of eqn \ref{eq:3.8}
 #. Add code to illustrate normal vs student's t-distribution
+#. Try to implement Algorithm 3.1
 

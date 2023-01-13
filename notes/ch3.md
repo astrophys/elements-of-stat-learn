@@ -494,6 +494,12 @@ Jargon
             * Residual    : ${\bf b} - \hat{\gamma} {\bf a}$
         #. "${\bf b}$ is orthogonalized w/r/t ${\bf a}$"
     #) This recipe can be generalized to $p$ inputs
+    #) Fig. 3.4 :
+        #. I understand that ${\bf z}$ as the residual and is perpendicular to
+            ${\bf x}_{1}$
+            * Makes sense b/c if ${\bf x}_{1}$ and ${\bf x}_{2}$ were the same 
+              vector, there would be no residual and ${\bf z} = 0$
+
     #) Algorithm 3.1 : Regression by Successive Othogonalization
         #. Step 1 : Initialize ${\bf z}_{0} = {\bf x}_{0} = {\bf 1}$
         #. Step 2 : For $j = 1, 2, \ldots, p$
@@ -507,7 +513,73 @@ Jargon
             \hat{\beta}_{p} & = \frac{\langle {\bf z}_{p}, {\bf y} \rangle}{\langle {\bf z}_{p}, {\bf z}_{p} \rangle}\\
           \end{aligned}
         $$                                                             {#eq:3.28}
-    
+            * Note that eqn \ref{eq:3.28} is for the LAST variable $p$
+            * ${\bf x}_{j}$ is a linear combination of ${\bf z}_{k}$, for $k \le j$
+            * ${\bf x}_{j}$ are the column vectors of ${\bf X}$, i.e. the variables
+            * ${\bf z}_{j}$ are all orthogonal, forme basis for ${\bf X}$
+            * Eqn \ref{eq:3.28} is key Correlated inputs in multiple regression
+            * Can shuffle ${\bf x}_{j}$, eqn \ref{eq:3.28} still holds
+            * Shown that $j$th multiple regression coefficient is the : 
+                + univariate regression of ${\bf y}$ on
+                  ${\bf x}_{j \cdot 012 \ldots (j-1)(j+1) \ldots, p}$
+                + the residual after regressing ${\bf x}_{j}$ on ${\bf x}_{0}, {\bf x}_{1},
+                  \ldots, {\bf x}_{j-1}, {\bf x}_{j+1}, \ldots, {\bf x}_{p}$
+                + QUESTION : Let's discuss this
+            * \emph{The multiple regression coefficient $\hat{\beta}_{j}$ represents
+              the additional contribution of ${\bf x}_{j}$ on ${\bf y}$, after 
+              ${\bf x}_{j}$ has been adjusted for ${\bf x}_{0}$, ${\bf x}_{1}$, \ldots,
+              ${\bf x}_{j-1}$, ${\bf x}_{j+1}$, $\ldots$, ${\bf x}_{p}$}
+            * If ${\bf x}_{p}$, is highly correlated with some of the other ${\bf x}_{k}$
+              residual vector ${\bf z}_{p} \approx 0$
+                + $\hat{\beta}_{p}$ will be unstable
+                + True for other variables
+                + In this situation, all the Z-scores might be small. Anyone can
+                  be deleted, but not all. 
+    #) Alternate formula for variance estimates (recall eqn \ref{eq:3.8})
+        $$
+          \begin{aligned}
+            \text{Var}(\hat{\beta}_{p}) = \frac{\sigma^{2}}{\langle {\bf z}_{p} {\bf z}_{p} \rangle}
+          \end{aligned}
+        $$                                                             {#eq:3.29}
+        #. In words, can estimate $\hat{\beta}_{p}$ based on length of residual vector 
+           ${\bf z}_{p}$; it represents how much of ${\bf x}_{p}$ is unexplained by other
+           ${\bf x}_{k}$'s 
+        #. See Exercise 3.4 for Gram-Schmidt procedure
+        #. QUESTION : What is $\sigma$ here, should it be $\sigma_{p}$?
+    #) Reformulate Algorithm 3.1 in matrix form 
+        #. Step 2
+        $$
+          \begin{aligned}
+            {\bf X} = {\bf Z}{\bf \Gamma}
+          \end{aligned}
+        $$                                                             {#eq:3.30}
+           where : 
+            * ${\bf Z}$ has the columns of ${\bf z}_{j}$ (in order)
+            * ${\bf \Gamma}$ is upper triangular matrix with entries $\hat{\gamma}_{kj}$
+        #. Introduce Diagonal matrix ${\bf D}$ with $j$th diagonal entry
+           $D_{jj} = ||z_{j}||$
+        $$
+          \begin{aligned}
+            {\bf X} & = {\bf Z}{\bf D}^{-1}{\bf D}{\bf \Gamma}          \\
+            {\bf X} & = {\bf Q}{\bf R}                                  \\
+          \end{aligned}
+        $$                                                             {#eq:3.31}
+            * ${\bf D}$ is invertible
+            * Enter $QR$ decomposition
+            * ${\bf Q}$ is an $N \times (p + 1)$ orthogonal matrix  
+                + ${\bf Q}^{T}{\bf Q} = {\bf I}$
+            * ${\bf R}$ is a $(p + 1) \times (p + 1)$ upper triangular matrix  
+        $$
+          \begin{aligned}
+            \hat{\beta} = {\bf R}^{-1} {\bf Q}^{T} {\bf y}
+          \end{aligned}
+        $$                                                             {#eq:3.32}
+        $$
+          \begin{aligned}
+            \hat{y} = {\bf Q} {\bf Q}^{T} {\bf y}
+          \end{aligned}
+        $$                                                             {#eq:3.33}
+            * eqn \ref{eq:3.33} is easy to solve, see Exercise 3.4
 
     #) Q / A
         #. Q : Below eqn \ref{eq:3.26}, he uses bold for the measurements ${\bf x}_{1}$.

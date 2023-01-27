@@ -591,6 +591,70 @@ Jargon
           \end{aligned}
         $$                                                             {#eq:3.33}
             * eqn \ref{eq:3.33} is easy to solve, see Exercise 3.4
+#. 3.2.4 - Multiple Outputs
+    a) Now consider multiple outputs $Y_{1}, Y_{2}, \ldots, Y_{K}$ from multiple inputs
+       $X_{0}, X_{1}, \ldots, X_{p}$
+        #. So far we've only considered multiple inputs with 1 output, 
+        #. There are $p$ variables
+        $$
+          \begin{aligned}
+            Y_{k} & = \beta_{0k} \sum_{j=1}^{p} X_{j} \beta_{jk} + \epsilon_{k} \\
+          \end{aligned}
+        $$                                                             {#eq:3.34}
+        $$
+          \begin{aligned}
+            Y_{k} & = f_{k}(X) + \epsilon_{k}                                   \\
+          \end{aligned}
+        $$                                                             {#eq:3.35}
+       With $N$ training cases, the model in matrix notation is 
+        $$
+          \begin{aligned}
+            {\bf Y} & = {\bf X}{\bf B} + {\bf E}                    \\
+            & \text{where : }                                       \\
+            & \text{ ${\bf Y}$ is $N \times K$ response matrix with $ik$ entry $y_{ik}$} \\
+            & \text{ ${\bf X}$ is $N \times (p+1)$ input matrix } \\
+            & \text{ ${\bf B}$ is $(p+1) \times K$ parameter matrix (like $\beta$ for multiple outputs} \\
+            & \text{ ${\bf E}$ is $N \times K$ error matrix} \\
+          \end{aligned}
+        $$                                                             {#eq:3.36}
+       Generalizing eqn \ref{eq:3.2}
+        $$
+          \begin{aligned}
+            \text{RSS}({\bf B}) & = \sum_{k=1}^{K} \sum_{i=1}^{N} (y_{ik} - f_{k}(x_{i}))^{2} \\
+          \end{aligned}
+        $$                                                             {#eq:3.37}
+        $$
+          \begin{aligned}
+            \text{RSS}({\bf B}) & = \text{tr}[({\bf Y} - {\bf X}{\bf B})^{T}({\bf Y} - {\bf X}{\bf B} \\
+          \end{aligned}
+        $$                                                             {#eq:3.38}
+       Note ${\bf B}$ is the equivalent to ${\beta}$. Analoguosly, minimizing the residuals
+        $$
+          \begin{aligned}
+            \hat{\bf B} & = ({\bf X}^{T}{\bf X})^{-1}{\bf X}^{T}{\bf Y}
+          \end{aligned}
+        $$                                                             {#eq:3.39}
+       The coefficients for $k$th outcome is the least squares regression of ${\bf y}_{k}$ on
+       ${\bf x}_{0}, {\bf x}_{1}, \dots, {\bf x}_{p}$
+        #. Multiple outputs don't affect the individual ${\bf y}_{k}$
+        #. QUESTION : Is that always true?
+
+       If the errors $(\epsilon = \epsilon_{1}, \ldots, \epsilon_{K}$ in \ref{eq:3.34}
+       correlated, let $\text{Cov}(\epsilon) = {\bf \Sigma}$, eqn \ref{eq:3.37} becomes 
+        $$
+          \begin{aligned}
+            \text{RSS}{\bf B; \Sigma} & = \sum_{i=1}^{N}(y_{i} - f(x_{i}))^{T}\Sigma^{-1}(y_{i} - f(x_{i}))     \\
+            & \text{where : }                                       \\
+            & \text{$f(x) = (f_{1}(x), \ldots, f_{K}(x))^{T}$}      \\
+            & \text{$y_{i} is vector of $K$ responses for observation $i$ (of $N$)}     \\
+          \end{aligned}
+        $$                                                             {#eq:3.40}
+        #. QUESTION : How do you derive eqn \ref{eq:3.40}?
+       Despite eqn \ref{eq:3.40}, eqn \ref{eq:3.39} is still a solution to eqn \ref{eq:3.40}.
+       If ${\bf \Sigma}_{i}$ varies among observations, then you are screwed and ${\bf B}$
+       becomes more complex.
+    
+    
 
     #) Q / A
         #. Q : Below eqn \ref{eq:3.26}, he uses bold for the measurements ${\bf x}_{1}$.
@@ -622,12 +686,36 @@ Jargon
         #. A : $\hat{\beta}_{p}$ is a scalar. The definition of a an inner product has to 
                map into a scalar. Inner products are NOT matrix multiplication.
               
-
-
-
-3.3 Two Simple Approaches to Prediction, Least Squares and Nearest Neighbors
+3.3 Subset Selection
 ==========================
-#. QUESTIONS : 
+#. Intro
+    a) 2 Reaons we aren't satisfied with least squares estimates (eqn \ref{eq:3.6})
+        #. Prediction accuracy 
+            * tend to have low bias, but large variance.
+            * Can shrink  some coeffs and sacrifice a little bias to reduce th variance
+        #. Intepretation
+            * with large number of predictors, should subset to find ones with
+              strongest effects
+#. 3.3.1 : Best-Subset Selection
+    a) Best subset of $k \in \{0,1,\ldots,p\}$ 
+        #. Gives smallest residual sum of squares in eqn \ref{eq:3.2}
+        #. \emp{leaps and bounds} algorithm
+            * see : Furnival and Wilson, 1974
+            * feasible for $p$ as large as 30 or 40.
+    #) Fig 3.5
+        #. Shows all subset models for prostate cancer data.
+        #. Size 2 gets you most of the way, size 8 is marginally better
+    #) Use cross-validation to estimate prediction error to get $k$
+        #. AIC criterion is popular
+#. 3.3.2 : Forward and Backward-Stepwise Selection
+    a) Need method for selecting subset
+        #. Infeasible to sample all possible subsets for $p$ much larger than 40 
+        #. \emph{Forward-stepwise selection} 
+            * Starts with intecept and sequentially adds to into the model the
+              predictor that most improves the fit
+            * 
+#. 
+            
 
 Exercises
 ==========================

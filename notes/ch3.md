@@ -499,7 +499,11 @@ Jargon
             ${\bf x}_{1}$
             * Makes sense b/c if ${\bf x}_{1}$ and ${\bf x}_{2}$ were the same 
               vector, there would be no residual and ${\bf z} = 0$
-
+        #. If you want to REMOVE the dependency of ${\bf x}_{2}$ on ${\bf x}_{1}$ the
+           residual will be the DIFFERENCE between ${\bf x}_{2}$ on ${\bf x}_{1}$. So
+           If you regress on the residual, the difference is removed.
+        #. This figure is confusing b/c it is really showing two steps, he should show the
+           residual step separate from the ${\bf \hat{y}}$
     #) Algorithm 3.1 : Regression by Successive Othogonalization
         #. Step 1 : Initialize ${\bf z}_{0} = {\bf x}_{0} = {\bf 1}$
         #. Step 2 : For $j = 1, 2, \ldots, p$
@@ -529,6 +533,8 @@ Jargon
               the additional contribution of ${\bf x}_{j}$ on ${\bf y}$, after 
               ${\bf x}_{j}$ has been adjusted for ${\bf x}_{0}$, ${\bf x}_{1}$, \ldots,
               ${\bf x}_{j-1}$, ${\bf x}_{j+1}$, $\ldots$, ${\bf x}_{p}$}
+                + It makes intuitive sense that you want to remove the intervariable 
+                  dependence before making a prediction with ${\bf \hat{\beta}}$
             * If ${\bf x}_{p}$, is highly correlated with some of the other ${\bf x}_{k}$
               residual vector ${\bf z}_{p} \approx 0$
                 + $\hat{\beta}_{p}$ will be unstable
@@ -545,7 +551,12 @@ Jargon
            ${\bf z}_{p}$; it represents how much of ${\bf x}_{p}$ is unexplained by other
            ${\bf x}_{k}$'s 
         #. See Exercise 3.4 for Gram-Schmidt procedure
+        #. Intuition here is that if $|{\bf z}_{p}|$ is small (ie they are highly 
+           correlated), then of course you won't get the separation you need.
         #. QUESTION : What is $\sigma$ here, should it be $\sigma_{p}$?
+        #. ANSWER   : $\sigma$ is a variance also. From near eqn \ref{eq:3.8} (eqn below 
+                      \ref{eq:3.8} in my notes) it is the variance observations, ${\bf y}$.
+                      Observed variance
     #) Reformulate Algorithm 3.1 in matrix form 
         #. Step 2
         $$

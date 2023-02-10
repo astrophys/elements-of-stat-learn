@@ -649,11 +649,11 @@ Jargon
             & \text{$y_{i} is vector of $K$ responses for observation $i$ (of $N$)}     \\
           \end{aligned}
         $$                                                             {#eq:3.40}
-        #. QUESTION : How do you derive eqn \ref{eq:3.40}?
+        #. QUESTION : How do you derive eqn \ref{eq:3.40}?  Looks like an expectation value
+        #. ANSWER : probably not too far off.
        Despite eqn \ref{eq:3.40}, eqn \ref{eq:3.39} is still a solution to eqn \ref{eq:3.40}.
        If ${\bf \Sigma}_{i}$ varies among observations, then you are screwed and ${\bf B}$
        becomes more complex.
-    
     
 
     #) Q / A
@@ -685,6 +685,9 @@ Jargon
         #. Q : in eqn \ref{eq:3.28}, $\beta_{p}$ only refers to a single vector, right? 
         #. A : $\hat{\beta}_{p}$ is a scalar. The definition of a an inner product has to 
                map into a scalar. Inner products are NOT matrix multiplication.
+    #) Meeting - 27jan2023
+        #. It is hard to find an example where the $Y_{0}, Y_{1}, ..., Y_{p}$
+            * E.g. ability ice skating and GPA...but those are correlated
               
 3.3 Subset Selection
 ==========================
@@ -713,8 +716,89 @@ Jargon
         #. \emph{Forward-stepwise selection} 
             * Starts with intecept and sequentially adds to into the model the
               predictor that most improves the fit
-            * 
-#. 
+            * \emph{greedy algorithm}
+            * Reasons to prefer :
+                + \emph{Computational} : for large $p$ we cannot compute the best subset
+                                         sequence, but we can always compute the forward
+                                         stpwise sequence (even when $p >> N$)
+                + \emph{Statistical} : a price is paid in variance for selecting the best
+                                       subset of each size; forward stepwise is a more 
+                                       constrained search and will have lower variance
+                                       and perhaps more bias
+    #) Figure 3.6
+        #. Shows several subset selection techniques
+            * Best Subset
+            * Forward Stepwise
+                + Can be used either when $N>p$ or $N<p$
+            * Backward Stepwise
+                + starts with full model, sequentially delete predictor and has least 
+                  impact on fit.
+                + Drop candidate with smallest Z-score
+                + Can only be used when $N>p$
+            * Forward Stagewise
+                + 
+        #. Simulated lin reg problem 
+            * $Y = X^{T} \beta + \epsilon$
+            * $N = 300$ observations 
+            * $p=31$ Gaussian variables
+            * Pairwise correlations = 0.85
+                + QUESTION : What is this?
+            * Coefficients for 10 vaiables drawn at random from $G(0,0.4)$
+            * Noise $\epsilon \sim N(0, 6.25)$
+            * Results averaged over 50 simulations
+                + QUESTION : Same 10 variables for each simulation?
+        #. Observations
+            * Best subset, Forward Stepwise  and Backward Stepwise all performed about the same
+    #) Prostate cancer revisited
+        #. best-subset, forward and backward selection ALL gave same sequence of terms
+    #) Software
+        #. R - step package uses AIC criterion to weigh choices
+        #. Other packages use F-statistics
+            * Add "significant" and drop "non-significant" terms
+        #. Tempting to print model summary bug 
+            * WARNING : standard errors don't account for search process
+#. 3.3.3 Forward-Stagewise Regression
+    a) Procedure
+        #. Initial intercept = $\bar{y}$, centered predictors = 0
+        #. At each step algorithm identifies the variable most correlated with current 
+           residual
+        #. On this variable computes simple linear regression coefficients
+        #. Add this to current coefficient for that variable
+        #. Continue until none of the variables have correlation with the residuals.
+            * i.e. least squares fit when $N>p$
+            * QUESTION : discuss procedure
+    #) Comment
+        #. more constrained than forward-stepwise regression
+        #. Unlike forward-stepwise regression, none of the vars are adjusted when a
+           term is added to the model
+            * Traditionally, discarded as inefficient on converge on least squares fit
+            * Has advantages in high-dimensional problems compared to the others
+#. 3.3.4 Prostate Cancer Data Example (continued)
+    a) Table 3.3
+        #. Estimated coefficients and test error results for different subset and shrinkage
+           methods applied to the prostate data. The blank entries corrspond to variables 
+           omitted
+        #. Tested 
+            * best-subset selection
+            * ridge regression
+            * lasso
+            * principal components regression
+            * partial least squares
+        #. Used cross-validation
+            * Train on 90% of data, test on 10%
+    #) Figure 3.7
+        #. Use \emph{one-standard-error} rule
+            * QUESTION : Discuss!
+        #. Shows number of directions (p?) vs Cross-validation error
+            * QUESTION : Let's discuss this plot
+
+
+3.4 Subset Selection
+==========================
+1. Ridge Regression 
+#.
+    
+#.  
             
 
 Exercises

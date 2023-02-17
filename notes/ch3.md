@@ -654,7 +654,24 @@ Jargon
        Despite eqn \ref{eq:3.40}, eqn \ref{eq:3.39} is still a solution to eqn \ref{eq:3.40}.
        If ${\bf \Sigma}_{i}$ varies among observations, then you are screwed and ${\bf B}$
        becomes more complex.
-    
+    #) N : The big takeaway is that this is what you'd expect.
+        #. Ali : Not surpising, but pleasing when it works out to what you'd make
+                 an assumption on 
+        #. Ali : The epsilon's are for EACH output.
+    #) N : Back to House case (outputs = price, time on market) it makes sense
+        #. Ali : But I'd expect an interaction term, I don't see that here.
+        #. N : Of course that would be harder
+        #. A : Actually this is eqn \ref{eq:3.40},  this is why he uses the
+               $\text{Cov}(\epsilon)$
+            * But this is only the ERRORS, but maybe that is all you know in an
+              underdermined system
+            * We're not sure if that is on the 
+            * Maybe he's taking an observational perspective
+        #. N : Is it that the errors are correlated
+        #. N : What is ${\bf \Sigma}_{i}$?
+            * A : Per sample? But how do you have a covariance matrix with 1 sample, maybe
+                  it is 1 row in ${\bf \Sigma}$?  That'd make more sense.
+     
 
     #) Q / A
         #. Q : Below eqn \ref{eq:3.26}, he uses bold for the measurements ${\bf x}_{1}$.

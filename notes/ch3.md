@@ -792,12 +792,17 @@ Jargon
         #. Shows number of directions (p?) vs Cross-validation error
             * QUESTION : Let's discuss this plot
 
-
 3.4 Subset Selection
 ==========================
 1. Ridge Regression 
+    a) Shrinks regression coefficients by imposing penalty on size
+        $$
+          \begin{aligned}
+            \hat{\beta}^{ridge} = \text{argmin}\Big{\sum_{i=1}^{N}(y_{i} - \beta_{0} - \sum_{j=1}^{p} x_{ij} \beta_{j})^{2} + \lambda \sum_{j=1}^{p} \beta_{j}^{2}\Big}
+          \end{aligned}
+        $$                                                             {#eq:3.41}
+       where $\lambda \ge 0$
 #.
-    
 #.  
             
 

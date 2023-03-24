@@ -790,6 +790,14 @@ Jargon
            term is added to the model
             * Traditionally, discarded as inefficient on converge on least squares fit
             * Has advantages in high-dimensional problems compared to the others
+    #) Big difference between Forward-Stagewise and Forward-Stepwise
+        #. Stepwise adds variables that. Once and done
+        #. Stagewise keeps all variables and may modify multiple times, which is why
+           it takes longer to converge
+            * At each step the algorithm identifies the variable most correlated
+              with the current residual.
+            * Hard sentenct to understand, Ali thinks it means that the variable that
+              best fits the current globabl fit. 
 #. 3.3.4 Prostate Cancer Data Example (continued)
     a) Table 3.3
         #. Estimated coefficients and test error results for different subset and shrinkage
@@ -806,8 +814,11 @@ Jargon
     #) Figure 3.7
         #. Use \emph{one-standard-error} rule
             * QUESTION : Discuss!
+            * ANSWER   : Standard deviation of the population is an ideal,
+                         Standard deviation of the sample
         #. Shows number of directions (p?) vs Cross-validation error
             * QUESTION : Let's discuss this plot
+            * ANSWER   : 
 
 3.4 Subset Selection
 ==========================
@@ -832,4 +843,6 @@ To Do
 1. Work on derivation of eqn \ref{eq:3.8}
 #. Add code to illustrate normal vs student's t-distribution
 #. Try to implement Algorithm 3.1
+#. 3/10/23 : He got to eq : 3.45
+    a) 40k classified groups, use nic's code?
 

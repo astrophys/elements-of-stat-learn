@@ -829,7 +829,123 @@ Jargon
             \hat{\beta}^{ridge} = \text{argmin}\Big{\sum_{i=1}^{N}(y_{i} - \beta_{0} - \sum_{j=1}^{p} x_{ij} \beta_{j})^{2} + \lambda \sum_{j=1}^{p} \beta_{j}^{2}\Big}
           \end{aligned}
         $$                                                             {#eq:3.41}
-       where $\lambda \ge 0$
+       where $\lambda \ge 0$ is a complexity param that controls the amount of shrinkage.
+        #. Larger $\lambda$, larger shrinkage
+        #. Idea of penalyzing by sum-of-squares is used in neural networks and is known as
+           \emph{weight decay}
+    #) Equivalent way to write ridge regression
+        $$
+          \begin{aligned}
+            \hat{\beta}^{ridge} & = \text{argmin}_{\beta}\Big{\sum_{i=1}^{N}(y_{i} - \beta_{0} - \sum_{j=1}^{p} x_{ij} \beta_{j})^{2} \Big}   \\
+                                & \text{subject to } \quad \sum_{j=1}^{p} \beta_{j}^{2} \leq t
+          \end{aligned}
+        $$                                                             {#eq:3.42}
+        #. QUESTION : Is $\hat{\beta}^{ridge}$ a vector or not? eq 2.6 has it as a vector (p12)
+        #. ANSWER : Yes, see \ref{eq:3.44}
+        #. One-to-one correspondance between $\lambda$ and $t$ in \ref{eq:3.41} and
+           \ref{eq:3.42} respectively
+        #. When there are many correlated variables in linear regression model, coeffs 
+           can become poorly determined and have high variance
+            * E.g. a wildly large coeff by cancelled by its equally negative correlated cousin
+            * \ref{eq:3.42} alleviates that problem
+        #. Must standardize inputs before solving \ref{eq:3.41}
+        #. Note that intercept, $\beta_{0}$ was left out of penalty term
+            * If we penalized the intercept, it would make the procedure depend on the 
+              origin chose for $Y$
+            * i.e. adding a constant $c$ wouldn't just `simply' shift the predictions
+              (which is bad)
+            * Procedure
+                + Estimate $\beta_{0}$ by $\overline{y} = \frac{1}{N} \sum_{1}^{N} y_{i}$
+                + Estimate rest of coeffs via ridge regression w/o intercept using centered
+                  $x_{ij}$ (i.e. $x_{ij} - \overline{x}_{j}$)
+            * From now on assume that the centering has already occurred
+            * QUESTION : Why hasn't he standardized the variance as well?
+        #. Writing \ref{eq:3.42} in matrix form
+        $$
+          \begin{aligned}
+            \text{RSS}(\lambda) = ({\bf y} - {\bf X}\beta)^{T}({\bf y} - {\bf X}\beta) + \lambda\beta^{T}\beta
+          \end{aligned}
+        $$                                                             {#eq:3.43}
+           re-arranged as : 
+        $$
+          \begin{aligned}
+            \hat{\beta}^{ridge} = ({\bf X}^{T}{\bf X} + \lambda {\bf I})^{-1}{\bf X}^{T}{\bf y}
+          \end{aligned}
+        $$                                                             {#eq:3.44}
+           where ${\bf I}$ is $p \times p$ identity matrix. The addition to the diagonals
+           ensures that the solution is non-singular.
+        #. For othonormal inputs, ridge estimates are just scaled version of least squares,
+           $\hat{\beta}^{ridge} = \hat{\beta}/(1+\lambda)$
+        #. QUESTION : What is the y-axis of Figure 3.8?
+        #. QUESTION : I don't understand the log-posterior discussion on the bottom of p64
+    #) Singular value decomposition (SVD) on centered input matrix ${\bf X}$
+        #. Give additional insight into nature of ridge regression, for ${\bf X}$ an
+           $N \times p$ matrix :
+        $$
+          \begin{aligned}
+            {\bf X} = {\bf U}{\bf D}{\bf V}^{T}
+          \end{aligned}
+        $$                                                             {#eq:3.45}
+            * ${\bf U}$ is $N\times p$ orthogonal matrix w/ columns of ${\bf U}$
+              spanning column space of ${\bf X}$ 
+            * ${\bf V}$ is a $p \times p$ orthogonal matrix w/ columns of ${\bf V}$
+              spanning rows of ${\bf X}$
+            * ${\bf D}$ is a $p \times p$ diagonal matrix of the singular values of
+              ${\bf X}$
+        #. Using SVD, can write least squares fit vector as 
+        $$
+          \begin{aligned}
+            {\bf X}\hat{\beta}^{ls} & = {\bf X}({\bf X}^{T}{\bf X})^{-1}{\bf X}^{T}{\bf y} \\
+                                    & = {\bf U}{\bf U}^{T}{\bf y} \\
+          \end{aligned}
+        $$                                                             {#eq:3.46}
+           where ${\bf U}^{T}{\bf Y}$ are the coordinates of ${\bf y}$ w/r/t orthonormal
+           basis ${\bf U}$. Similar to eq 3.33. Now the ridge regression : 
+        $$
+          \begin{aligned}
+            {\bf X}\hat{\beta}^{ridge} & = {\bf X}({\bf X}^{T}{\bf X} + \lambda{\bf I})^{-1}{\bf X}^{T}{\bf y} \\
+                & = {\bf U}{\bf D}({\bf D}^{2} + \lambda{\bf I})^{-1}{\bf D}{\bf U}^{T}{\bf y} \\
+                & = \sum_{j=1}^{p} {\bf u}_{j} \frac{d_{j}^{2}}{d_{j}^{2} + \lambda}{\bf u}_{j}^{T}{\bf y}
+          \end{aligned}
+        $$                                                             {#eq:3.47}
+           where ${\bf u}_{j} are columns of ${\bf U}$ and $d_{j}$ are the diagonal elements
+           off of ${\bf D}$
+        #. SVD is another way of expressing \emph{principal components} of the variables
+           in ${\bf X}$
+            * Sample covariance matrix is : ${\bf S} = {\bf X}^{T} {\bf X} / N$, and from 
+              \ref{eq:3.45} we get the \emph{eigen decomposition} of ${\bf X}^{T}{\bf X}$
+              and of ${\bf S}$, up to a factor $N$).
+        $$
+          \begin{aligned}
+            {\bf X}^{T}{\bf X} = {\bf V}{\bf D}^{2}{\bf V}^{T}
+          \end{aligned}
+        $$                                                             {#eq:3.48}
+              columns of ${\bf V}$ are the eigenvectors, aka principal components 
+              directions of ${\bf X}$. 
+            * First Princp Comp is the eigenvecot s.t.
+              ${\bf z}_{1} = {\bf X}v_{1} = {\bf u}_{1} d_{1}$ 
+              has the largest sample variance amongst all normalized linear combos, see :`
+        $$
+          \begin{aligned}
+            Var({\bf z}_{1} = Var(\bf{X} v_{1}) = d_{1}^{2} / N
+          \end{aligned}
+        $$                                                             {#eq:3.49}
+        #. QUESTION : I don't see how eqn \ref{eq:3.47} and ridge regression is related
+                      to principal components
+        #. QUESTION : Let's discuss Figure 3.9
+        #. In Fig 3.7, plotted the estimated prediction error vs \emph{effective degrees of fredom} : 
+        $$
+          \begin{aligned}
+            df(\lambda) & = \tr[{\bf X}({\bf X}^{T}{\bf X} + \lambda {\bf I})^{-1}{\bf X}^{T}] \\
+                & = \tr[{\bf H}]    \\
+                & = \sum_{j=1}^{p} \frac{d_{j}^{2}}{d_{j}^{2} + \lambda}
+          \end{aligned}
+        $$                                                             {#eq:3.50}
+           Note : degrees of freedom : 
+            * $\text{df}(\lambda) = p$, when $\lambda = 0$
+            * $\text{df}(\lambda) = 0$, when $\lambda = \inf$
+            * don't forget about additional dof b/c of intercept
+            
 #.
 #.  
             
@@ -845,4 +961,5 @@ To Do
 #. Try to implement Algorithm 3.1
 #. 3/10/23 : He got to eq : 3.45
     a) 40k classified groups, use nic's code?
+#. Try to reproduce Table 3.3
 
